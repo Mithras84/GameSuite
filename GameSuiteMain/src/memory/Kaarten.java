@@ -6,6 +6,7 @@ public class Kaarten {
 	/**
 	 * De klasse om de kaarten en het type te beheren.
 	 * 
+	 * Oke dan
 	 * @author Koen
 	 */
 
