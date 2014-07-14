@@ -20,6 +20,7 @@ public class TestSpeelbord {
 	// TODO Auto-generated method stub
 	DamBord bord = new DamBord(5,5);
 	bord.showBord();
+	bord.showLinks();
 
     }
 

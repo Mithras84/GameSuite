@@ -14,6 +14,12 @@ public class DamBord {
     private int kolommen;
     private Nodes[][] speelbord;
     
+    /**
+     * Constructor
+     * Creeer een virtueel dambord op basis van de opgegeven specificaties 
+     * @param rij
+     * @param kolom
+     */
     public DamBord(int rij, int kolom) {
 	rijen = rij;
 	kolommen = kolom;
@@ -21,6 +27,11 @@ public class DamBord {
 	vulBord();
     }
     
+    /**
+     * Beschermde methode om het bord te vullen met 'Nodes':
+     * Lege vlakken op het speelbord, die een damsteen kunnen bevatten.
+     * @see dammen.model.Nodes
+     */
     private void vulBord () {
 	for (int i = 0; i < rijen ; i++ ) {
 	    for (int j = 0; j < kolommen ; j++ ) {
@@ -29,6 +40,9 @@ public class DamBord {
 	}
     }
     
+    /**
+     * Test functie. Laat alle Nodes op het bord zien.
+     */
     public void showBord () {
 	for (int i = 0; i < rijen ; i++ ) {
 	    for (int j = 0; j < kolommen ; j++ ) {
@@ -37,5 +51,17 @@ public class DamBord {
 	    }	    
 	}
     }
+    
+    /**
+     * Test functie. Achterhaal alle mogelijke 'links' tussen de nodes op het bord.
+     */
+    public void showLinks () {
+	System.out.println("Neighbour left of coord 1 : 1 = " 
+		+ speelbord[1][1].getCoordLeft(1, 1).toString() ) ;
+	System.out.println("Neighbour right of coord 1 : 1 = " 
+		+ speelbord[1][1].getCoordRight(1, 1).toString() ) ;
+    }
+    
+    
 
 }
