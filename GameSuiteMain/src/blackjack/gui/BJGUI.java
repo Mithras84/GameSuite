@@ -1,11 +1,11 @@
 /**
  * Deze gui leent van de volgende packages:
  */
-package blackjackgui;
+package blackjack.gui;
 /**
  * Deze gui import de volgende files:
  */
-import blackjackdomain.BlackJackEngine;
+import blackjack.domain.BlackJackEngine;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
