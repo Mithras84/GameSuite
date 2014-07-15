@@ -10,5 +10,16 @@ package dammen.model;
  * @author 		Pieter
  */
 public class DamSteen {
+    private String kleur;
+    private static int id = 0;
+    
+    public DamSteen (String kleur) {
+	this.kleur = kleur;
+	id++;
+    }
+    
+    public String getKleur () {
+	return this.kleur;
+    }
 
 }

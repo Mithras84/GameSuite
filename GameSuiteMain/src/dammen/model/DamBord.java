@@ -40,14 +40,17 @@ public class DamBord {
 	}
     }
     
+    public Nodes[][] getSpeelbord () {
+	return this.speelbord;
+    }
+    
     /**
      * Test functie. Laat alle Nodes op het bord zien.
      */
     public void showBord () {
 	for (int i = 0; i < rijen ; i++ ) {
 	    for (int j = 0; j < kolommen ; j++ ) {
-		System.out.println("X coordinaat: " + this.speelbord[i][j].getX() + " en Y coordinaat: " +
-			this.speelbord[i][j].getY());
+		System.out.println(speelbord[i][j].toString());
 	    }	    
 	}
     }
@@ -61,7 +64,4 @@ public class DamBord {
 	System.out.println("Neighbour right of coord 1 : 1 = " 
 		+ speelbord[1][1].getCoordRight(1, 1).toString() ) ;
     }
-    
-    
-
 }

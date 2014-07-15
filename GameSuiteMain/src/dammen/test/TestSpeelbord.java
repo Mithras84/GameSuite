@@ -3,7 +3,7 @@
  */
 package dammen.test;
 
-import dammen.model.DamBord;
+import dammen.gui.GUITest;
 
 /**
  * Class description
@@ -18,9 +18,11 @@ public class TestSpeelbord {
      */
     public static void main(String[] args) {
 	// TODO Auto-generated method stub
-	DamBord bord = new DamBord(5,5);
-	bord.showBord();
-	bord.showLinks();
+	//DamBord bord = new DamBord(5,5);
+	//bord.showBord();
+	//bord.showLinks();
+	GUITest gui = new GUITest ();
+	
 
     }
 
