@@ -19,13 +19,30 @@ public class ScreenSize {
     public static int HEIGHT;
     public static int WIDTH;
     
+    public static int NODESIZE;
+    
     static {
 	Toolkit toolkit = Toolkit.getDefaultToolkit();
 	maxSize = toolkit.getScreenSize();
 	prefSize = new Dimension();
 	prefSize.setSize(maxSize.getWidth() * 0.5, maxSize.getHeight() * 0.5);
-	HEIGHT = (int)prefSize.getHeight(); //Voor de menubalk
+	HEIGHT = (int)prefSize.getHeight(); 
 	WIDTH = (int)prefSize.getWidth();
+    }
+    
+    public static void setDammenSize (int kolommen, int rijen) {
+	/*
+	int NODESIZE = Math.min( Math.min ( rijen * 50 , (int) maxSize.getHeight() ),
+		 Math.min (kolommen * 50, (int) maxSize.getWidth() ) );
+	*/
+	
+	int tmpH = Math.min ( rijen * 50 , (int) maxSize.getHeight() );
+	int tmpW = Math.min (kolommen * 50, (int) maxSize.getWidth() );
+	
+	NODESIZE = Math.min(tmpH / rijen , tmpW / kolommen);
+	
+	WIDTH = kolommen * NODESIZE;
+	HEIGHT = rijen * NODESIZE;
     }
 
 }

@@ -3,8 +3,8 @@
  */
 package dammen.controller;
 
+import dammen.gui.DambordGUI;
 import dammen.model.DamBord;
-import dammen.model.Nodes;
 
 /**
  * Class description
@@ -17,9 +17,16 @@ public class Dammen {
     
     
     public Dammen () {
-	DamBord dambord = new DamBord (10,20);	
+	nieuwSpel ();
     }
     
+    public void nieuwSpel () {
+	this.dambord = new DamBord (10,10);
+	
+	DambordGUI gui = new DambordGUI ( this.dambord );
+	gui.maakDambord ();
+	gui.updateBord();
+    }
     
     
 

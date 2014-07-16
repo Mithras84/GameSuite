@@ -3,8 +3,7 @@
  */
 package dammen.test;
 
-import dammen.gui.DambordGUI;
-import dammen.model.DamBord;
+import dammen.controller.Dammen;
 
 /**
  * Class description
@@ -22,8 +21,7 @@ public class TestSpeelbord {
 	//DamBord bord = new DamBord(5,5);
 	//bord.showBord();
 	//bord.showLinks();
-	DamBord dam = new DamBord (10,20);
-	DambordGUI gui = new DambordGUI (dam);
+	new Dammen ();
 	
 
     }
