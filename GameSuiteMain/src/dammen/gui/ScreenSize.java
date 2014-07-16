@@ -24,7 +24,7 @@ public class ScreenSize {
 	maxSize = toolkit.getScreenSize();
 	prefSize = new Dimension();
 	prefSize.setSize(maxSize.getWidth() * 0.5, maxSize.getHeight() * 0.5);
-	HEIGHT = (int)prefSize.getHeight() + 10; //Voor de menubalk
+	HEIGHT = (int)prefSize.getHeight(); //Voor de menubalk
 	WIDTH = (int)prefSize.getWidth();
     }
 

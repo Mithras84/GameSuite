@@ -4,11 +4,14 @@
 package dammen.model;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import javax.swing.JComponent;
+
+import dammen.gui.ScreenSize;
 
 /**
  * Class description
@@ -23,8 +26,11 @@ public class Nodes extends JComponent {
     private static final long serialVersionUID = 1L;
     private String kleur;
     private Coord coord;
+    
+    Dimension nodeSize;
 
     public Nodes (int x, int y) {
+	nodeSize = new Dimension (ScreenSize.HEIGHT / 11, ScreenSize.HEIGHT / 11);
 	coord = new Coord (x,y);
 	if (x%2 == 1 && y%2 == 1) 
 	    this.kleur = "zwart";
@@ -80,12 +86,14 @@ public class Nodes extends JComponent {
     }
     
     public void setNodeSize () {
-	this.setSize(30 + (coord.getX() * 30), 30 + (coord.getY() * 30)); 
+	this.setSize(nodeSize.width + (coord.getX() * nodeSize.width),
+		nodeSize.height + (coord.getY() * nodeSize.height)); 
     }
     
     public void paintComponent (Graphics g) {
 	Graphics2D g2d = (Graphics2D) g;
-	Rectangle block = new Rectangle (coord.getX() * 30, coord.getY() * 30, 30 , 30);
+	Rectangle block = new Rectangle (coord.getX() * nodeSize.width, coord.getY() * nodeSize.height,
+		nodeSize.width , nodeSize.height);
 	
 	if (kleur == "zwart") {
 	    g2d.setColor(Color.black);

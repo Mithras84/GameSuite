@@ -15,7 +15,7 @@ public class DamBord {
     private Nodes[][] speelbord;
     
     /**
-     * Constructor
+     * Constructor.
      * Creeer een virtueel dambord op basis van de opgegeven specificaties 
      * @param rij
      * @param kolom

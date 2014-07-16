@@ -3,6 +3,9 @@
  */
 package dammen.controller;
 
+import dammen.model.DamBord;
+import dammen.model.Nodes;
+
 /**
  * Class description
  * 
@@ -10,5 +13,14 @@ package dammen.controller;
  * @author 		Pieter
  */
 public class Dammen {
+    private DamBord dambord;
+    
+    
+    public Dammen () {
+	DamBord dambord = new DamBord (10,20);	
+    }
+    
+    
+    
 
 }
