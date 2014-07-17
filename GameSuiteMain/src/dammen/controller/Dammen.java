@@ -23,9 +23,9 @@ public class Dammen {
     public void nieuwSpel () {
 	this.dambord = new DamBord (10,10);
 	
-	DambordGUI gui = new DambordGUI ( this.dambord );
-	gui.maakDambord ();
-	gui.updateBord();
+	new DambordGUI ( this.dambord );
+	//gui.maakDambord ();
+	//gui.updateBord();
     }
     
     

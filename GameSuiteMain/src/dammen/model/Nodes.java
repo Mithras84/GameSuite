@@ -4,7 +4,6 @@
 package dammen.model;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -35,18 +34,17 @@ public class Nodes extends JComponent {
     private String kleur;
     private Coord coord;
     private DamSteen damsteen;
-    
-    Dimension nodeSize;
 
     public Nodes (int x, int y) {
-	nodeSize = new Dimension (ScreenSize.NODESIZE, ScreenSize.NODESIZE);
 	coord = new Coord (x,y);
+	
 	if (x%2 == 1 && y%2 == 1) 
-	    this.kleur = "wit";
-	else if (x%2 == 0 && y%2 == 0)
-	    this.kleur = "wit";
-	else 
 	    this.kleur = "zwart";
+	else if (x%2 == 0 && y%2 == 0)
+	    this.kleur = "zwart";
+	else 
+	    this.kleur = "wit";
+	setSize(ScreenSize.NODESIZE , ScreenSize.NODESIZE);
     }
     
     public boolean hasDamsteen () {
@@ -68,6 +66,13 @@ public class Nodes extends JComponent {
 	return this.kleur;
     }
     
+    public void setKleur (String kleur) {
+	if (kleur == "zwart") 
+	    this.kleur = "zwart";
+	else if (kleur == "highlight") 
+	    this.kleur = "highlight";
+    }
+
     public String toString () {
 	String res;
 	if (this.damsteen != null) {
@@ -77,26 +82,9 @@ public class Nodes extends JComponent {
 	}
 	return res;
     }
-    
-    public Nodes getNode (int x, int y) {
-	if (x == coord.getX() && y == coord.getY() ) 
-	    return this;
-	else 
-	    return null;
-    }
-    
-    public Nodes getNode (Coord coord) {
-	if (this.coord.equals(coord)) 
-	    return this;
-	else 
-	    return null;
-    }
-    
+        
     public Coord getCoordLeft (int x, int y) {
-	if (x >= 1 )
-	    return new Coord ( x - 1, y + 1 );
-	else
-	    return null;
+	return new Coord ( x - 1, y + 1 );
     }
     
     public Coord getCoordRight (int x, int y) {
@@ -107,28 +95,25 @@ public class Nodes extends JComponent {
 	return coord;
     }
         
-    public int getX(){
+    public int getXCoord(){
 	return coord.getX();
     }
     
-    public int getY(){
+    public int getYCoord(){
 	return coord.getY();
     }
-    
-    public void setNodeSize () {
-	this.setSize(nodeSize.width + (coord.getX() * nodeSize.width),
-		nodeSize.height + (coord.getY() * nodeSize.height)); 
-    }
-    
+        
     public void paintComponent (Graphics g) {
-	Graphics2D g2d = (Graphics2D) g;
-	Rectangle block = new Rectangle (coord.getX() * nodeSize.width, coord.getY() * nodeSize.height,
-		nodeSize.width , nodeSize.height);
+	super.paintComponent(g);
 	
+	Graphics2D g2d = (Graphics2D) g;
+	Rectangle block = new Rectangle (0, 0, ScreenSize.NODESIZE, ScreenSize.NODESIZE);
 	if (kleur == "zwart") {
 	    g2d.setColor(Color.darkGray);
-	}else{ 
+	}else if (kleur == "wit"){ 
 	    g2d.setColor(Color.white);
+	} else if ( kleur == "highlight" ) {
+	    g2d.setColor(Color.blue);
 	}
 	
 	g2d.fill(block);

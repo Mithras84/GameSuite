@@ -21,7 +21,8 @@ public class DamBord {
     
     /**
      * Constructor.
-     * Creeer een virtueel dambord op basis van de opgegeven specificaties 
+     * Creeer een virtueel dambord op basis van de opgegeven specificaties.
+     * Voorwaarden: Aantal rijen en kolommen zijn altijd even, en altijd groter dan 4.
      * @param aantal kolommen (X coordinaat)
      * @param aantal rijen (Y coordinaat)
      */
@@ -86,13 +87,34 @@ public class DamBord {
 	return this.kolommen;
     }
     
-    public Coord[] showFreeNodes (int x, int y) {
-	Coord[] res = new Coord[2];
-	res[0] = speelbord[x][y].getCoordLeft(x, y);
-	res[1] = speelbord[x][y].getCoordRight(x, y);
+    public Coord[] showFreeNodes (Coord coord) {
 	
+	Coord[] res = new Coord[2];
+	
+	//Kijk of er een vakje linksboven en rechtsboven vrij is:
+	if ( ( coord.getX() >= 1 && coord.getX() < kolommen - 1) && coord.getY() < rijen ) {
+	    res[0] = speelbord[coord.getX()][coord.getY()].getCoordLeft(coord.getX(), coord.getY());
+	    res[1] = speelbord[coord.getX()][coord.getY()].getCoordRight(coord.getX(), coord.getY());
+	
+	//Kijk of er een vakje rechtsboven vrij is:
+	} else if ( ( coord.getX() == 0 && coord.getX() < kolommen) && coord.getY() < rijen ) {
+	    res[0] = null;
+	    res[1] = speelbord[coord.getX()][coord.getY()].getCoordRight(coord.getX(), coord.getY());
+	
+	//Kijk of er een vakje linksboven vrij is:
+	} else if ( ( coord.getX() >= 1 && coord.getX() == kolommen - 1) && coord.getY() < rijen ) {
+	    res[0] = speelbord[coord.getX()][coord.getY()].getCoordLeft(coord.getX(), coord.getY());
+	    res[1] = null;
+	
+	//Geen vakjes vrij. Niks om te highlighten
+	} else {
+	    res[0] = null;
+	    res[1] = null;
+	}	
 	return res;
     }
+    
+    //private Coord showFreeNodeHelper 
     
     /**
      * Test functie. Laat alle Nodes op het bord zien.

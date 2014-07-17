@@ -4,10 +4,10 @@
 package dammen.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,16 +29,17 @@ public class DambordGUI implements MouseListener {
     JPanel bord;
     JLabel label;
     private DamBord dambord;
+    private Coord selectedNodeCoord;
+    private GridBagConstraints c;
     
     public DambordGUI (DamBord dambord) {
 	this.dambord = dambord;
 	
 	initFrame ();
 	initPanels ();
-	//maakDambord();
+	maakDambord();
+	updateBord();
     }
-    
-
     
     private void initFrame () {
 	frame = new JFrame ();
@@ -51,12 +52,13 @@ public class DambordGUI implements MouseListener {
     
     private void initPanels () {
 	panel = new JPanel ();
-	//panel.setBounds(0, 0, ScreenSize.WIDTH + 25, ScreenSize.HEIGHT + 75);
+	panel.setBounds(0, 0, ScreenSize.WIDTH + 25, ScreenSize.HEIGHT + 75);
 	panel.setLayout(new BorderLayout());
 	
 	bord = new JPanel ();
 	bord.setBounds(0,0, ScreenSize.WIDTH, ScreenSize.HEIGHT );
-	bord.setLayout(null);
+	bord.setLayout(new GridBagLayout());
+	c = new GridBagConstraints ();
 		
 	label = new JLabel ();
 	label.setText("Text");
@@ -69,38 +71,54 @@ public class DambordGUI implements MouseListener {
     }   
         
     public void maakDambord () {
-	
-	for (int i = 0; i < dambord.getKolommen(); i++) {
+	c.weightx = 1;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.BOTH;
+        
+	for (int i = 0; i < dambord.getKolommen(); i++) {	    
 	    for (int j = 0; j < dambord.getRijen(); j++) {
-		bord.add(dambord.getSpeelbord()[i][j]);
-		dambord.getSpeelbord()[i][j].setNodeSize();
+		c.gridx = i;
+		c.gridy = j;
+		bord.add(dambord.getSpeelbord()[i][j], c);
 		dambord.getSpeelbord()[i][j].addMouseListener(this);
-		System.out.println(dambord.getSpeelbord()[i][j].getSize());
 	    }
 	}	
 	bord.repaint();
     }
     
     public void updateBord () {
-	for (int i = 0; i < dambord.getKolommen(); i++) {
-	    for (int j = 0; j < dambord.getRijen(); j++) {
+	for (int i = 0; i < dambord.getKolommen(); i++) {	    
+	    for (int j = 0; j < dambord.getRijen(); j++) {		
 		if (dambord.getSpeelbord()[i][j].hasDamsteen() ) {
-		    dambord.getSpeelbord()[i][j].add(dambord.getSpeelbord()[i][j].getDamsteen());
-		    dambord.getSpeelbord()[i][j].getDamsteen().setSteenSize();
-		    System.out.println (dambord.getSpeelbord()[i][j].getDamsteen().getSize() );		    
+		    dambord.getSpeelbord()[i][j].add(dambord.getSpeelbord()[i][j].getDamsteen());    
 		}
 	    }
 	}	
 	bord.repaint();
     }
     
-    public void highlightNode (Coord coord) {
-	if (coord != null) {
-	    if (dambord.getSpeelbord()[coord.getX()][coord.getY()].hasDamsteen()) {
-		dambord.getSpeelbord()[coord.getX()][coord.getY()].getDamsteen().setKleur(Color.blue);
-		bord.repaint();
-	    }
-	} 
+    public void highlightNode (Coord[] coord) {	
+	if (coord[0] != null) {
+	    dambord.getSpeelbord()[coord[0].getX()][coord[0].getY()].setKleur("highlight");
+	    //bord.repaint();
+	    //dambord.getSpeelbord()[coord[0].getX()][coord[0].getY()].setKleur("zwart");
+	}	
+	if (coord[1] != null) {
+	    dambord.getSpeelbord()[coord[1].getX()][coord[1].getY()].setKleur("highlight");
+	    //bord.repaint();
+	    //dambord.getSpeelbord()[coord[1].getX()][coord[1].getY()].setKleur("zwart");
+	}
+	updateBord ();
+    }
+    
+    public void unHighlightNode (Coord[] coord) {
+	if (coord[0] != null) {
+	    dambord.getSpeelbord()[coord[0].getX()][coord[0].getY()].setKleur("zwart");
+	}	
+	if (coord[1] != null) {
+	    dambord.getSpeelbord()[coord[1].getX()][coord[1].getY()].setKleur("zwart");
+	}
+	updateBord ();
     }
     
 
@@ -110,8 +128,20 @@ public class DambordGUI implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
 	// TODO Auto-generated method stub
-	Nodes node = (Nodes)e.getComponent();
-	highlightNode(new Coord(node.getX(), node.getY() ));
+	if (e.getButton() == 1) {
+	    if (selectedNodeCoord != null) {
+		unHighlightNode(dambord.showFreeNodes(selectedNodeCoord));
+	    }
+	    Nodes node = (Nodes)e.getComponent();
+	    selectedNodeCoord = node.getCoord();
+	    highlightNode(dambord.showFreeNodes(selectedNodeCoord));
+	} else if (e.getButton() == 2 ) {
+	    if (selectedNodeCoord != null) {
+		unHighlightNode(dambord.showFreeNodes(selectedNodeCoord));
+	    }
+	} else if (e.getButton() == 3) {
+	    System.out.println(e.getComponent().toString());
+	}
 	
     }
 

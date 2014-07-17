@@ -37,14 +37,14 @@ public class DamSteen extends JComponent {
 	    this.kleur = Color.white;
 	DamSteen.COUNT++;
 	id = DamSteen.COUNT;
-	steenSize = new Dimension (ScreenSize.NODESIZE, ScreenSize.NODESIZE);
+	setSize (ScreenSize.NODESIZE , ScreenSize.NODESIZE );
     }
     
     public DamSteen (Color kleur) {
 	this.kleur = kleur;
 	DamSteen.COUNT++;
 	id = DamSteen.COUNT;
-	steenSize = new Dimension (ScreenSize.NODESIZE, ScreenSize.NODESIZE);
+	setSize (ScreenSize.NODESIZE , ScreenSize.NODESIZE );
     }
     
     public void setCoord (Coord coord) {
@@ -80,15 +80,9 @@ public class DamSteen extends JComponent {
 	return "" + this.steenSize.getSize();
     }
     
-    public void setSteenSize () {
-	this.setSize(steenSize.width + (coord.getX() * steenSize.width),
-		steenSize.height + (coord.getY() * steenSize.height)); 
-    }
-    
-    public void paintComponent (Graphics g) {
+   public void paintComponent (Graphics g) {
 	Graphics2D g2d = (Graphics2D) g;
-	Ellipse2D circle = new Ellipse2D.Double(coord.getX() * steenSize.width + 5, coord.getY() * steenSize.height + 5,
-		steenSize.width - 10 , steenSize.height - 10);
+	Ellipse2D circle = new Ellipse2D.Double(5,5,ScreenSize.NODESIZE-10,ScreenSize.NODESIZE-10);
 	g2d.setColor(this.kleur);
 	
 	g2d.fill(circle);
