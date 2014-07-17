@@ -4,6 +4,7 @@
 package dammen.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
@@ -50,25 +51,24 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
     }
 
     private void initFrame() {
-	frame = new JFrame();
+	frame = new JFrame( "Dammen" );
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	frame.setSize(ScreenSize.WIDTH + 25, ScreenSize.HEIGHT + 70);
+	frame.setSize(ScreenSize.WIDTH + 25, ScreenSize.HEIGHT + 50);
 
 	frame.setVisible(true);
-	frame.setResizable(false);
     }
 
     private void initPanels() {
+	
 	panel = new JPanel();
-	panel.setBounds(0, 0, ScreenSize.WIDTH + 25, ScreenSize.HEIGHT + 75);
+	panel.setBounds(0, 0, ScreenSize.WIDTH + 25, ScreenSize.HEIGHT + 50);
 	panel.setLayout(new BorderLayout());
-	panel.setOpaque(true);
 
 	bord = new BordPanel();
-	bord.setBounds(0, 0, ScreenSize.WIDTH, ScreenSize.HEIGHT);
-	bord.setLayout(new GridBagLayout());
-	
+	bord.setBounds(0 ,0 ,ScreenSize.WIDTH, ScreenSize.HEIGHT);
+	bord.setMaximumSize(new Dimension(ScreenSize.WIDTH, ScreenSize.HEIGHT));
+	bord.setLayout(new GridBagLayout());	
 	c = new GridBagConstraints();
 
 	label = new JLabel();
@@ -92,7 +92,8 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
 		bord.add(new NodeComponent(i,dambord.getKolommen() -1 -j), c);
 		bord.getNodeComponent(i, dambord.getKolommen() -1 -j).addMouseListener(this);		
 	    }
-	}	
+	}
+	frame.pack();
 	bord.repaint();
     }
 
@@ -100,9 +101,9 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
 	for (int i = 0; i < dambord.getKolommen(); i++) {
 	    for (int j = 0; j < dambord.getRijen(); j++) {
 		if (speelbord[i][j].hasDamsteen()) {
-		    //bord.getNodeComponent(i,j).add( new DamSteenComponent( speelbord[i][j].getDamsteen().getKleur() ) );
 		    bord.getNodeComponent(i, j).setDamsteen(speelbord[i][j].getDamsteen().getKleur());
-		    bord.getNodeComponent(i, j).repaint();
+		    bord.getNodeComponent(i, j).repaint(10);
+		    System.out.println(bord.getNodeComponent(i, j).isLightweight());
 		} 
 	    }
 	}	
@@ -147,12 +148,7 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
 	// TODO Auto-generated method stub
 	NodeComponent nodec = (NodeComponent) e.getComponent();
 	bord.getNodeComponent(nodec.getCoord()).setHighlight(true);
-	
-	DamSteen steen = speelbord[0][0].moveDamsteen();
-	speelbord[0][4].setDamSteen(steen);
 	updateBord();
-	
-
     }
 
     /*
