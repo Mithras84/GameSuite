@@ -3,14 +3,6 @@
  */
 package dammen.model;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-
-import javax.swing.JComponent;
-
-import dammen.gui.ScreenSize;
 
 /**
  * Class description Deze klasse representeerd een veld op het dambord. Het veld
@@ -24,8 +16,7 @@ import dammen.gui.ScreenSize;
  * @version 1.00 14 jul. 2014
  * @author Pieter
  */
-public class Nodes extends JComponent {
-    private static final long serialVersionUID = 1L;
+public class Nodes {
     private String kleur;
     private Coord coord;
     private DamSteen damsteen;
@@ -39,12 +30,11 @@ public class Nodes extends JComponent {
     public Nodes(int x, int y) {
 	coord = new Coord(x, y);
 	if (x % 2 == 1 && y % 2 == 1)
-	    this.kleur = "wit";
-	else if (x % 2 == 0 && y % 2 == 0)
-	    this.kleur = "wit";
-	else
 	    this.kleur = "zwart";
-	setSize(ScreenSize.NODESIZE, ScreenSize.NODESIZE);
+	else if (x % 2 == 0 && y % 2 == 0)
+	    this.kleur = "zwart";
+	else
+	    this.kleur = "wit";
     }
 
     /**
@@ -78,6 +68,15 @@ public class Nodes extends JComponent {
      */
     public DamSteen getDamsteen() {
 	return this.damsteen;
+    }
+    
+    public DamSteen moveDamsteen () {
+	if (this.hasDamsteen()) {
+	    DamSteen steen = this.damsteen;
+	    this.damsteen = null;
+	    return steen;
+	} else 
+	    return null;
     }
 
     /**
@@ -162,30 +161,6 @@ public class Nodes extends JComponent {
 	return coord.getY();
     }
 
-    /**
-     * Overridden functie. Paint deze node op het bord, maak gebruik van
-     * dynamische NODESIZE in de klasse
-     * 
-     * @see ScreenSize. Bepaal de kleur van het vakje op basis van de kleur van
-     *      deze node.
-     */
-    public void paintComponent(Graphics g) {
-	super.paintComponent(g);
 
-	Graphics2D g2d = (Graphics2D) g;
-	Rectangle block = new Rectangle(0, 0, ScreenSize.NODESIZE,
-		ScreenSize.NODESIZE);
-	if (kleur == "zwart") {
-	    g2d.setColor(Color.darkGray);
-	} else if (kleur == "wit") {
-	    g2d.setColor(Color.white);
-	} else if (kleur == "highlight") {
-	    g2d.setColor(Color.blue);
-	}
-
-	g2d.fill(block);
-	g2d.draw(block);
-
-    }
 
 }

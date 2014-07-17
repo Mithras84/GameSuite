@@ -18,9 +18,8 @@ import dammen.gui.ScreenSize;
  * @version 1.00 14 jul. 2014
  * @author Pieter
  */
-public class DamSteen extends JComponent {
-
-    private static final long serialVersionUID = 6701312830890255850L;
+public class DamSteen {
+    
     private Color kleur;
     private Coord coord;
 
@@ -35,8 +34,6 @@ public class DamSteen extends JComponent {
 	
 	DamSteen.COUNT++;
 	id = DamSteen.COUNT;
-	
-	setSize(ScreenSize.NODESIZE, ScreenSize.NODESIZE);
     }
 
     public DamSteen(Color kleur) {
@@ -44,8 +41,6 @@ public class DamSteen extends JComponent {
 	
 	DamSteen.COUNT++;
 	id = DamSteen.COUNT;
-	
-	setSize(ScreenSize.NODESIZE, ScreenSize.NODESIZE);
     }
 
     public void setCoord(Coord coord) {
@@ -78,17 +73,4 @@ public class DamSteen extends JComponent {
 	return this.getKleurToString() + " ID=" + id + " " + coord.getX() + ":"
 		+ coord.getY();
     }
-
-    public void paintComponent(Graphics g) {
-	Graphics2D g2d = (Graphics2D) g;
-	
-	Ellipse2D circle = new Ellipse2D.Double(5, 5, ScreenSize.NODESIZE - 10,
-		ScreenSize.NODESIZE - 10);
-	g2d.setColor(this.kleur);
-
-	g2d.fill(circle);
-	g2d.draw(circle);
-
-    }
-
 }

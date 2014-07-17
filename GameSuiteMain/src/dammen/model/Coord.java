@@ -55,6 +55,14 @@ public class Coord {
 	else 
 	    this.y = 0;
     }
+    
+    public boolean equalsCoor (Coord coord) {
+	if (coord.getX() == this.getX()
+			&& coord.getY() == this.getY() )
+	    return true;
+	else
+	    return false;	
+    }
         
     public String toString () {
 	return this.x + " " + this.y;

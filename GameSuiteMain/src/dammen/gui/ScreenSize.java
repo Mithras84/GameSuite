@@ -21,6 +21,9 @@ public class ScreenSize {
     
     public static int NODESIZE;
     
+    public static int KOLOMMEN;
+    public static int RIJEN;
+    
     static {
 	Toolkit toolkit = Toolkit.getDefaultToolkit();
 	maxSize = toolkit.getScreenSize();
@@ -31,10 +34,8 @@ public class ScreenSize {
     }
     
     public static void setDammenSize (int kolommen, int rijen) {
-	/*
-	int NODESIZE = Math.min( Math.min ( rijen * 50 , (int) maxSize.getHeight() ),
-		 Math.min (kolommen * 50, (int) maxSize.getWidth() ) );
-	*/
+	KOLOMMEN = kolommen;
+	RIJEN = rijen;
 	
 	int tmpH = Math.min ( rijen * 50 , (int) maxSize.getHeight() );
 	int tmpW = Math.min (kolommen * 50, (int) maxSize.getWidth() );
