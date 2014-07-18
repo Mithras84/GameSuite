@@ -3,6 +3,8 @@
  */
 package dammen.model;
 
+import java.awt.Color;
+
 import dammen.gui.ScreenSize;
 
 /**
@@ -20,6 +22,9 @@ public class DamBord {
     private int kolommen;
     private int rijen;
     private Nodes[][] speelbord;
+    
+    private Player speler;
+    private AI ai;
 
     /**
      * Constructor. Creeer een virtueel dambord op basis van de opgegeven
@@ -45,8 +50,17 @@ public class DamBord {
 
 	speelbord = new Nodes[kolommen][rijen];
 	
+	setKleur();
 	maakBord();
 	vulBord();
+    }
+    
+    private void setKleur () {
+	speler = new Player ("wit");
+	if (speler.getKleurToString() == "wit") 
+	    ai = new AI(Color.black);
+	else 
+	    ai = new AI(Color.white);
     }
 
     /**
@@ -64,6 +78,8 @@ public class DamBord {
 		this.speelbord[i][j] = new Nodes(i, j);
 	    }
 	}
+	
+	
     }
 
     /**
@@ -71,18 +87,17 @@ public class DamBord {
      * initialiseren van een nieuw spel.
      */
     private void vulBord() {
+	String kleur = null;
 	
-	String kleur = "wit";
-
 	for (int i = 0; i < rijen; i++) {
 	    
 	    // De kant van de Speler (@todo-> Laat speler kleur kiezen, nu
 	    // standaard zwart).
 	    if (i < (rijen / 2) - 1)
-		kleur = "zwart";
+		kleur = speler.getKleurToString();
 	    // De kant van de AI.
 	    else if (i >= (rijen / 2) + 1)
-		kleur = "wit";
+		kleur = ai.getKleurToString();
 	    // De twee rijen in het midden van het bord mogen geen damstenen
 	    // bevatten.
 	    else

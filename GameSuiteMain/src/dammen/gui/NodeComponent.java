@@ -38,13 +38,13 @@ public class NodeComponent extends JComponent {
 	setSize (nodeSize,nodeSize);
 	
 	if (x % 2 == 1 && y % 2 == 1) {
-	    this.image = ImageHelper.getImageFromFile("VeldDonker");
+	    this.image = ImageHelper.veldDonker;
 	    this.color = Color.black;
 	} else if (x % 2 == 0 && y % 2 == 0) {
-	    this.image = ImageHelper.getImageFromFile("VeldDonker");
+	    this.image = ImageHelper.veldDonker;
 	    this.color = Color.black;
 	} else {
-	    this.image = ImageHelper.getImageFromFile("VeldLicht"); 
+	    this.image = ImageHelper.veldLicht;
 	    this.color = Color.white;
 	}
 	
@@ -79,10 +79,6 @@ public class NodeComponent extends JComponent {
 
 	Graphics2D g2d = (Graphics2D) g;
 	g2d.drawImage(this.image, 0,0,this);
-	//g2d.setColor(color);
-	//Rectangle rec = new Rectangle (0,0,nodeSize,nodeSize);
-	//g2d.fill(rec);
-	//g2d.draw(rec);
 		
 	if (damSteen) {
 	    drawDamSteen (g2d);    
@@ -95,37 +91,29 @@ public class NodeComponent extends JComponent {
     }
     
     public void drawHighlight (Graphics2D g2d) {
-	g2d.setStroke(new BasicStroke(5));
-	g2d.setColor(Color.blue);
+	g2d.setStroke(new BasicStroke(4));
+	if (damSteen)
+	    g2d.setColor(Color.blue);
+	else 
+	    g2d.setColor(Color.green);
 	g2d.drawRect(0,0, nodeSize, nodeSize);
 	highLight = false;
 	g2d.setColor(color);
     }
     
     public void drawDamSteen (Graphics2D g2d) {
-	/*
-	int nodePos = nodeSize / 10;
-	int nodeWH = nodeSize - (2*nodePos);		
 
-	Color oldColor = g2d.getColor();
-	
-	g2d.setColor(this.damSteenKleur);
-	g2d.fillOval(nodePos, nodePos, nodeWH, nodeWH);
-	
-	damSteen = false;
-	g2d.setColor(oldColor);
-	*/
 	BufferedImage img = null;
 	if (this.color == Color.black) {
 	    if (this.damSteenKleur == Color.black)
-		img = ImageHelper.getImageFromFile("VeldDonkerMetSteenZwart");
+		img = ImageHelper.veldDonkerZwart;
 	    else if (this.damSteenKleur == Color.white)
-		img = ImageHelper.getImageFromFile("VeldDonkerMetSteenWit");
+		img = ImageHelper.veldDonkerWit;
 	} else if (this.color == Color.white) {
 	    if (this.damSteenKleur == Color.black)
-		img = ImageHelper.getImageFromFile("VeldLichtMetSteenZwart");
+		img = ImageHelper.veldLichtZwart;
 	    else if (this.damSteenKleur == Color.white)
-		img = ImageHelper.getImageFromFile("VeldLichtMetSteenWit");
+		img = ImageHelper.veldLichtWit;
 	}
 	
 	g2d.drawImage(img, 0,0,this);

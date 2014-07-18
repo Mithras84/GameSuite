@@ -4,6 +4,7 @@
 package dammen.gui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
@@ -45,6 +46,8 @@ public class BordPanel extends JPanel {
 	return nodeList[coord.getX()][coord.getY()];
     }
     
-    
+    public Dimension getPreferredSize() {
+        return new Dimension(ScreenSize.KOLOMMEN * ScreenSize.NODESIZE ,ScreenSize.RIJEN * ScreenSize.NODESIZE);
+    }
 
 }

@@ -90,7 +90,7 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
 		c.gridx = i;
 		c.gridy = j;		
 		bord.add(new NodeComponent(i,dambord.getKolommen() -1 -j), c);
-		bord.getNodeComponent(i, dambord.getKolommen() -1 -j).addMouseListener(this);		
+				
 	    }
 	}
 	frame.pack();
@@ -102,8 +102,7 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
 	    for (int j = 0; j < dambord.getRijen(); j++) {
 		if (speelbord[i][j].hasDamsteen()) {
 		    bord.getNodeComponent(i, j).setDamsteen(speelbord[i][j].getDamsteen().getKleur());
-		    bord.getNodeComponent(i, j).repaint(10);
-		    System.out.println(bord.getNodeComponent(i, j).isLightweight());
+		    bord.getNodeComponent(i, j).addMouseListener(this);
 		} 
 	    }
 	}	
