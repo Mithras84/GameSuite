@@ -112,6 +112,20 @@ public class DamBord {
     }
 
     /**
+     * @return the speler
+     */
+    public Player getSpeler() {
+        return speler;
+    }
+
+    /**
+     * @return the ai
+     */
+    public AI getAi() {
+        return ai;
+    }
+
+    /**
      * Haal virtueel speelbord op.
      * 
      * @return Het virtuele speelbord, een array met alle Nodes (vakken) van het

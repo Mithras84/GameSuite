@@ -20,6 +20,22 @@ public class Nodes {
     private String kleur;
     private Coord coord;
     private DamSteen damsteen;
+    
+    private boolean highLight;
+
+    /**
+     * @return the highLight
+     */
+    public boolean isHighLight() {
+        return highLight;
+    }
+
+    /**
+     * @param highLight the highLight to set
+     */
+    public void setHighLight(boolean highLight) {
+        this.highLight = highLight;
+    }
 
     /**
      * Creeer een nieuw Node (Veld) op basis van de opgegeven parameters.

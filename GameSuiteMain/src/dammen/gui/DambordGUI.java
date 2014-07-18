@@ -4,9 +4,9 @@
 package dammen.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.Cursor;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 
 import dammen.model.Coord;
 import dammen.model.DamBord;
-import dammen.model.DamSteen;
 import dammen.model.Nodes;
 
 /**
@@ -26,7 +25,7 @@ import dammen.model.Nodes;
  * @version 1.00 15 jul. 2014
  * @author Pieter
  */
-public class DambordGUI implements MouseListener, MouseMotionListener {
+public class DambordGUI implements MouseListener, MouseMotionListener, ComponentListener {
 
     JFrame frame;
     JPanel panel;
@@ -35,10 +34,7 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
 
     private DamBord dambord;
     private Nodes[][] speelbord;
-    private Coord selectedNodeCoord;
-    private GridBagConstraints c;
     
-    private boolean mouseDrag;
 
     public DambordGUI(DamBord dambord) {
 	this.dambord = dambord;
@@ -57,6 +53,8 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
 	frame.setSize(ScreenSize.WIDTH + 25, ScreenSize.HEIGHT + 50);
 
 	frame.setVisible(true);
+	
+	frame.setLocationRelativeTo(null);
     }
 
     private void initPanels() {
@@ -64,12 +62,11 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
 	panel = new JPanel();
 	panel.setBounds(0, 0, ScreenSize.WIDTH + 25, ScreenSize.HEIGHT + 50);
 	panel.setLayout(new BorderLayout());
+	panel.addComponentListener(this);
 
 	bord = new BordPanel();
 	bord.setBounds(0 ,0 ,ScreenSize.WIDTH, ScreenSize.HEIGHT);
-	bord.setMaximumSize(new Dimension(ScreenSize.WIDTH, ScreenSize.HEIGHT));
-	bord.setLayout(new GridBagLayout());	
-	c = new GridBagConstraints();
+	bord.setOpaque(true);
 
 	label = new JLabel();
 	label.setText("Text");
@@ -81,32 +78,20 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
     }
 
     public void maakDambord() {
-	c.weightx = 1;
-	c.weighty = 1;	
-	c.fill = GridBagConstraints.BOTH;
-
-	for (int i = 0; i < dambord.getKolommen(); i++) {
-	    for (int j = 0; j < dambord.getRijen(); j++) {
-		c.gridx = i;
-		c.gridy = j;		
-		bord.add(new NodeComponent(i,dambord.getKolommen() -1 -j), c);
-				
-	    }
-	}
+	bord.addSpeelBord(speelbord);
 	frame.pack();
-	bord.repaint();
     }
 
     public void updateBord() {
+	maakDambord();
 	for (int i = 0; i < dambord.getKolommen(); i++) {
 	    for (int j = 0; j < dambord.getRijen(); j++) {
-		if (speelbord[i][j].hasDamsteen()) {
-		    bord.getNodeComponent(i, j).setDamsteen(speelbord[i][j].getDamsteen().getKleur());
+		if ( speelbord[i][j].hasDamsteen() && speelbord[i][j].getDamsteen().getKleur() == dambord.getSpeler().getKleur() ) {
 		    bord.getNodeComponent(i, j).addMouseListener(this);
+		    bord.getNodeComponent(i, j).addMouseMotionListener(this);
 		} 
 	    }
-	}	
-	bord.repaint();
+	}
     }
     
 
@@ -145,8 +130,10 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
     @Override
     public void mouseClicked(MouseEvent e) {
 	// TODO Auto-generated method stub
-	NodeComponent nodec = (NodeComponent) e.getComponent();
-	bord.getNodeComponent(nodec.getCoord()).setHighlight(true);
+	NodeComponent node = (NodeComponent)e.getComponent();
+	label.setText( node.getCoord().toString() );
+	speelbord[node.getCoord().getX()][node.getCoord().getY()].moveDamsteen();
+	System.out.println(speelbord[node.getCoord().getX()][node.getCoord().getY()].hasDamsteen());
 	updateBord();
     }
 
@@ -170,6 +157,7 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
     @Override
     public void mouseReleased(MouseEvent e) {
 	// TODO Auto-generated method stub
+	/*
 	if (selectedNodeCoord!=null && mouseDrag == true) {
 	    mouseDrag = false;
 	    Coord[] selectedNode = dambord.showFreeNodes(selectedNodeCoord);
@@ -190,6 +178,7 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
 	    }	    
 	}
 	selectedNodeCoord = null;
+	*/
     }
 
     /*
@@ -236,6 +225,46 @@ public class DambordGUI implements MouseListener, MouseMotionListener {
      */
     @Override
     public void mouseMoved(MouseEvent e) {
+	// TODO Auto-generated method stub
+	NodeComponent n = (NodeComponent) e.getComponent();
+	n.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	label.setText(n.getCoord().toString());
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+     */
+    @Override
+    public void componentResized(ComponentEvent e) {
+	// TODO Auto-generated method stub
+	ScreenSize.reSize (panel.getSize());
+	System.out.println(ScreenSize.NODESIZE);
+	updateBord();
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
+     */
+    @Override
+    public void componentMoved(ComponentEvent e) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    @Override
+    public void componentShown(ComponentEvent e) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    @Override
+    public void componentHidden(ComponentEvent e) {
 	// TODO Auto-generated method stub
 	
     }
