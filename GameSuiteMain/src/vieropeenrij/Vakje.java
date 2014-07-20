@@ -1,5 +1,7 @@
 package vieropeenrij;
 
+import java.awt.Color;
+
 /**
  * Klasse waarin een vakje wordt gecreëerd van het vier op een rij veld. 
  * @author Peter
@@ -8,9 +10,7 @@ package vieropeenrij;
 public class Vakje{
   
   private boolean gevuld = false;
-  private boolean speler = false;
-  private int rij = 0;
-  private int kolom = 0;
+  private Color schijfkleur = null;
   
   /**
    * Constructor: maakt een nieuw vakje aan.
@@ -35,29 +35,19 @@ public class Vakje{
   }
   
   /**
-   * Vraagt op of de speler aan de beurt is
-   * @return  true wanneer speler, false wanneer AI.  
+   * Geeft het schijfje een bepaalde kleur.
+   * @param kleur  de kleur
    */
-  public boolean getSpeler(){
-    return speler;
+  public void setKleur(Color kleur){
+    schijfkleur = kleur;
   }
   
-  public void setSpeler(boolean wissel){
-    speler = wissel;
-  }
-  
-  public int getRij(){
-    return rij;
-  }
-  public void setRij(int i){
-    rij = i;
-  }
-  
-  public int getKolom(){
-    return kolom;
-  }
-  public void setKolom(int i){
-    kolom = i;
+  /**
+   * Vraagt de kleur van het schijfje op.
+   * @return  de kleur
+   */
+  public Color getKleur(){
+    return schijfkleur;
   }
 }
 

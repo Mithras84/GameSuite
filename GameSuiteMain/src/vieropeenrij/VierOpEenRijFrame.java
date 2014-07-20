@@ -1,6 +1,7 @@
 package vieropeenrij;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -27,7 +28,10 @@ public class VierOpEenRijFrame extends JFrame{
   private JPanel knoppenveld = null;
   private JButton knop = null;
   private Veld veld = new Veld();
-  private Vakje vakje = null;
+  private JButton[] knoppenArray = new JButton[KOLOMMEN];
+  private Vakje[][] raster = veld.getRaster();
+  private int rijnummer = RIJEN - 1;
+  private int kolomnummer = KOLOMMEN - 1;
   
   public VierOpEenRijFrame(){
   super();
@@ -51,11 +55,12 @@ public class VierOpEenRijFrame extends JFrame{
     knoppenveld = new JPanel();
     knoppenveld.setLayout(new GridLayout(0, KOLOMMEN));
     pane.add(knoppenveld, BorderLayout.NORTH);
-    for(int i = 0; i < KOLOMMEN; i++){
-      knop = new JButton("" + (i+1));
-      knop.setPreferredSize(new Dimension (RANDLENGTE, RANDLENGTE));
-      knop.addActionListener(new KnopLuisteraar()); 
-      knoppenveld.add(knop);
+    for(int i = 0; i < knoppenArray.length; i++){
+      knoppenArray[i] = new JButton();
+      knoppenArray[i].setText("" + (i + 1));
+      knoppenArray[i].setPreferredSize(new Dimension (RANDLENGTE, RANDLENGTE));
+      knoppenArray[i].addActionListener(new KnopLuisteraar()); 
+      knoppenveld.add(knoppenArray[i]);
     }  
     //maakt speelveld
     pane.add(veld, BorderLayout.CENTER);
@@ -70,13 +75,40 @@ public class VierOpEenRijFrame extends JFrame{
   
   public class KnopLuisteraar implements ActionListener{
     public void actionPerformed(ActionEvent e){
-    int knopnummer = Integer.parseInt(knop.getText());
-    vakje = veld.getVakje(knopnummer - 1, 0);
-    vakje.setGevuld(true);
-    veld.repaint();
-    vakje.setSpeler(true);
-    System.out.println(knop.getText());
+      knop = (JButton) e.getSource();
+      kolomnummer = Integer.parseInt(knop.getText()) - 1;
+      veld.volgendeBeurt();
+      for(int i = rijnummer; i > 0; rijnummer--){
+        if(raster[kolomnummer][rijnummer].getGevuld() == false) {
+          raster[kolomnummer][rijnummer].setGevuld(true);
+          if(veld.getBeurt() % 2 == 0){
+            raster[kolomnummer][rijnummer].setKleur(Color.YELLOW);
+          }
+          else{
+            raster[kolomnummer][rijnummer].setKleur(Color.RED);
+          }
+          veld.repaint();
+          break;
+        }
+        herkenWinnaar();
+      }
+    } 
+  } 
+  
+  /**
+   * Checkt of er vier schijfjes van dezelfde kleur op een rij liggen.
+   */
+/*  private void herkenWinnaar(){
+    for(int i = 0; i < KOLOMMEN -1; i++){
+      for(int j = 0; j < RIJEN - 1; j++){
+        Color kleur = raster[kolomnummer][rijnummer].getKleur();
+        if(kleur == raster[kolomnummer + 1][rijnummer].getKleur() &&
+            kleur == raster[kolomnummer + 2][rijnummer].getKleur() &&
+            kleur == raster[kolomnummer + 3][rijnummer].getKleur()){
+          System.out.println("Winnaar!");
+        }
+      }
     }
   }
+*/  
 }
-  
