@@ -22,20 +22,8 @@ public class Nodes {
     private DamSteen damsteen;
     
     private boolean highLight;
+    private boolean selected;
 
-    /**
-     * @return the highLight
-     */
-    public boolean isHighLight() {
-        return highLight;
-    }
-
-    /**
-     * @param highLight the highLight to set
-     */
-    public void setHighLight(boolean highLight) {
-        this.highLight = highLight;
-    }
 
     /**
      * Creeer een nieuw Node (Veld) op basis van de opgegeven parameters.
@@ -110,10 +98,7 @@ public class Nodes {
      * @param kleur
      */
     public void setKleur(String kleur) {
-	if (kleur == "zwart")
-	    this.kleur = "zwart";
-	else if (kleur == "highlight")
-	    this.kleur = "highlight";
+	this.kleur=kleur;
     }
 
     /**
@@ -175,6 +160,35 @@ public class Nodes {
      */
     public int getYCoord() {
 	return coord.getY();
+    }
+    
+
+    /**
+     * @return the highLight
+     */
+    public boolean isHighLight() {
+        return highLight;
+    }
+
+    /**
+     * @param highLight the highLight to set
+     */
+    public void setHighLight(boolean highLight) {
+        this.highLight = highLight;
+    }
+
+    /**
+     * @return the selected
+     */
+    public boolean isSelected() {
+	return selected;
+    }
+
+    /**
+     * @param selected the selected to set
+     */
+    public void setSelected(boolean selected) {
+	this.selected = selected;
     }
 
 

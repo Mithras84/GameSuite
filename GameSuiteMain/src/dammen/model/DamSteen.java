@@ -4,6 +4,7 @@
 package dammen.model;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  * Class description
@@ -14,10 +15,12 @@ import java.awt.Color;
 public class DamSteen {
     
     private Color kleur;
-    private Coord coord;
+    private Coord coord; //Deze is eigenlijk niet nodig.. Staat ook in Node..
 
-    public static int COUNT;
-    public int id;
+    private static int COUNT; //Zodat alle damstenen een Unique ID hebben.
+    private int id;
+    
+    private ArrayList<Nodes> moveList;
 
     public DamSteen(String kleur) {
 	if (kleur == "zwart")
@@ -27,6 +30,27 @@ public class DamSteen {
 	
 	DamSteen.COUNT++;
 	id = DamSteen.COUNT;
+	
+	moveList = new ArrayList<> ();
+    }
+    
+    public void addMove (Nodes node) {
+	moveList.add(node);
+    }
+    
+    public boolean hasMoves () {
+	return !moveList.isEmpty();
+    }
+    
+    public ArrayList<Nodes> getMoveList () {
+	return moveList;
+    }
+    
+    public Nodes[] getMoveToArray () {
+	
+	System.out.println(moveList.size());
+	Nodes[] tmp = (Nodes[]) moveList.toArray(new Nodes[moveList.size()]);
+	return tmp;
     }
 
     public DamSteen(Color kleur) {

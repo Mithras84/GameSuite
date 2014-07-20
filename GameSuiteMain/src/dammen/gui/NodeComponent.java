@@ -25,6 +25,8 @@ public class NodeComponent extends JComponent {
 
     private static final long serialVersionUID = 5104899510098445836L;
     private Nodes node;
+
+
     private int nodeSize;
     private Color color;
     
@@ -45,6 +47,13 @@ public class NodeComponent extends JComponent {
 	}	
     }
         
+    /**
+     * @return the node
+     */
+    public Nodes getNode() {
+        return node;
+    }
+    
     public Coord getCoord () {
 	return this.node.getCoord();
     }   
@@ -73,6 +82,7 @@ public class NodeComponent extends JComponent {
 	
 	if (node.isHighLight()) {
 	    drawHighlight(g2d);
+	    node.setHighLight(false);
 	}
 	
     }
@@ -80,9 +90,9 @@ public class NodeComponent extends JComponent {
     public void drawHighlight (Graphics2D g2d) {
 	g2d.setStroke(new BasicStroke(4));
 	if (node.hasDamsteen())
-	    g2d.setColor(Color.blue);
-	else 
 	    g2d.setColor(Color.green);
+	else 
+	    g2d.setColor(Color.blue);
 	g2d.drawRect(0,0, nodeSize, nodeSize);
 	g2d.setColor(color);
     }

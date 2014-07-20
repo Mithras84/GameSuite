@@ -15,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import dammen.model.Coord;
 import dammen.model.DamBord;
 import dammen.model.Nodes;
 
@@ -33,12 +32,10 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
     JLabel label;
 
     private DamBord dambord;
-    private Nodes[][] speelbord;
     
 
     public DambordGUI(DamBord dambord) {
 	this.dambord = dambord;
-	this.speelbord = dambord.getSpeelbord();
 
 	initFrame();
 	initPanels();
@@ -78,7 +75,7 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
     }
 
     public void maakDambord() {
-	bord.addSpeelBord(speelbord);
+	bord.addSpeelBord(dambord.getSpeelbord());
 	frame.pack();
     }
 
@@ -86,42 +83,21 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
 	maakDambord();
 	for (int i = 0; i < dambord.getKolommen(); i++) {
 	    for (int j = 0; j < dambord.getRijen(); j++) {
-		if ( speelbord[i][j].hasDamsteen() && speelbord[i][j].getDamsteen().getKleur() == dambord.getSpeler().getKleur() ) {
+		if ( 
+			(dambord.getNodeAt(i, j).hasDamsteen() && dambord.getNodeAt(i, j).getDamsteen().hasMoves() ) 
+			&&
+			dambord.getNodeAt(i, j).getDamsteen().getKleur() == dambord.getSpeler().getKleur() 
+		) {
 		    bord.getNodeComponent(i, j).addMouseListener(this);
 		    bord.getNodeComponent(i, j).addMouseMotionListener(this);
-		} 
+		} else if (dambord.getNodeAt(i, j).isHighLight()) {
+		    bord.getNodeComponent(i, j).addMouseListener(this);
+		    bord.getNodeComponent(i, j).addMouseMotionListener(this);
+		}
 	    }
 	}
     }
     
-
-    public void highlightNode(Coord[] coord) {
-	if ( coord[0] != null && 
-		!dambord.getSpeelbord()[coord[0].getX()][coord[0].getY()].hasDamsteen() ) {
-	    
-	    dambord.getSpeelbord()[coord[0].getX()][coord[0].getY()].setKleur("highlight");	    
-	}
-	
-	if ( coord[1] != null && 
-		!dambord.getSpeelbord()[coord[1].getX()][coord[1].getY()].hasDamsteen() ) {
-	    
-	    dambord.getSpeelbord()[coord[1].getX()][coord[1].getY()].setKleur("highlight");	    
-	}	
-	//updateBord();
-    }
-
-    public void unHighlightNode(Coord[] coord) {
-	if (coord[0] != null) {
-	    dambord.getSpeelbord()[coord[0].getX()][coord[0].getY()]
-		    .setKleur("zwart");
-	}
-	if (coord[1] != null) {
-	    dambord.getSpeelbord()[coord[1].getX()][coord[1].getY()]
-		    .setKleur("zwart");
-	}	
-	//updateBord();
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -132,8 +108,11 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
 	// TODO Auto-generated method stub
 	NodeComponent node = (NodeComponent)e.getComponent();
 	label.setText( node.getCoord().toString() );
-	speelbord[node.getCoord().getX()][node.getCoord().getY()].moveDamsteen();
-	System.out.println(speelbord[node.getCoord().getX()][node.getCoord().getY()].hasDamsteen());
+	node.getNode().setHighLight(true);
+	Nodes[] tmp = node.getNode().getDamsteen().getMoveToArray();
+	for (Nodes n : tmp) {
+	    n.setHighLight(true);
+	}
 	updateBord();
     }
 
@@ -157,28 +136,6 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
     @Override
     public void mouseReleased(MouseEvent e) {
 	// TODO Auto-generated method stub
-	/*
-	if (selectedNodeCoord!=null && mouseDrag == true) {
-	    mouseDrag = false;
-	    Coord[] selectedNode = dambord.showFreeNodes(selectedNodeCoord);
-	    Object ob = bord.findComponentAt(e.getLocationOnScreen());
-	    System.out.println(ob);
-	    if (ob instanceof Nodes) {
-		System.out.println("Node found!");
-		Nodes node = (Nodes) ob;
-		for (int i = 0; i < selectedNode.length; i++) {
-		    if (selectedNode[i].equalsCoor(node.getCoord() )) {			
-			System.out.println("Target found!");
-			DamSteen steen =  dambord.getSpeelbord()[selectedNodeCoord.getX()][selectedNodeCoord.getY()].moveDamsteen();
-			dambord.getSpeelbord()[node.getXCoord()][node.getYCoord()].setDamSteen( steen );
-			selectedNodeCoord = null;
-			//updateBord();
-		    }
-		}
-	    }	    
-	}
-	selectedNodeCoord = null;
-	*/
     }
 
     /*
@@ -209,14 +166,6 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
     @Override
     public void mouseDragged(MouseEvent e) {
 	// TODO Auto-generated method stub
-	/*
-	Nodes node = (Nodes) e.getComponent();
-	    if (node.getKleur() == "zwart" && node.hasDamsteen()) {
-		selectedNodeCoord = node.getCoord();
-		label.setText(node.toString());
-		mouseDrag = true;
-	    }
-	    */
 	
     }
 

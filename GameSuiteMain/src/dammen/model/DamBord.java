@@ -22,6 +22,7 @@ public class DamBord {
     private int kolommen;
     private int rijen;
     private Nodes[][] speelbord;
+       
     
     private Player speler;
     private AI ai;
@@ -53,6 +54,16 @@ public class DamBord {
 	setKleur();
 	maakBord();
 	vulBord();
+	setMoves();
+    }
+    
+    public void setMoves () {
+	for (int i = 0; i < kolommen; i++) {
+	    for (int j = 0; j < rijen; j++) {
+		if (speelbord[i][j].hasDamsteen())
+		    setPossibleMoves(speelbord[i][j]);
+	    }
+	}
     }
     
     private void setKleur () {
@@ -77,9 +88,7 @@ public class DamBord {
 	    for (int j = 0; j < rijen; j++) {
 		this.speelbord[i][j] = new Nodes(i, j);
 	    }
-	}
-	
-	
+	}	
     }
 
     /**
@@ -109,6 +118,14 @@ public class DamBord {
 		    this.speelbord[j][i].setDamSteen(new DamSteen(kleur));
 	    }
 	}
+    }
+    
+    public Nodes getNodeAt (Coord coord) {
+	return speelbord[coord.getX()][coord.getY()];
+    }
+    
+    public Nodes getNodeAt (int x, int y) {
+	return speelbord[x][y];
     }
 
     /**
@@ -152,43 +169,37 @@ public class DamBord {
     }
 
     /**
-     * Deze functie kijkt, op basis van de coordinaten van het geselecteerde
-     * vakje, welke vakjes er vrij zijn voor een eventuele zet. Geef coordinaten
-     * van de vrije vakjes terug in een array.
+     * Deze functie kijkt, op basis van de input node,
+     * welke vakjes er vrij zijn voor een eventuele zet.
+     * 
+     * Deze mogelijke zet wordt opgeslagen in het damsteen object in de node.
      * 
      * @todo Moet netter en dynamischer. AI moet ook gebruik kunnen maken van
      *       deze functie!
-     * @param coord
-     * @return array met coordinaten van vakjes.
+     * @param Nodes node
      */
-    public Coord[] showFreeNodes(Coord coord) {
-
-	Coord[] res = new Coord[2];
+    public void setPossibleMoves (Nodes node) {
+	Coord coord = node.getCoord();
 
 	// Kijk of er een vakje linksboven en rechtsboven vrij is:
 	if ((coord.getX() >= 1 && coord.getX() < kolommen - 1)
 		&& coord.getY() < rijen - 1) {
-	    res[0] = speelbord[coord.getX()][coord.getY()].getCoordLeft();
-	    res[1] = speelbord[coord.getX()][coord.getY()].getCoordRight();
-
+	    if ( !getNodeAt(getNodeAt(coord).getCoordLeft()).hasDamsteen() )
+		node.getDamsteen().addMove( getNodeAt(getNodeAt(coord).getCoordLeft()) );
+	    if ( !getNodeAt(getNodeAt(coord).getCoordRight()).hasDamsteen() )
+		node.getDamsteen().addMove( getNodeAt(getNodeAt(coord).getCoordRight()) );
 	    // Kijk of er een vakje rechtsboven vrij is:
 	} else if ((coord.getX() == 0 && coord.getX() < kolommen)
 		&& coord.getY() < rijen - 1) {
-	    res[0] = null;
-	    res[1] = speelbord[coord.getX()][coord.getY()].getCoordRight();
+	    if ( !getNodeAt(getNodeAt(coord).getCoordRight()).hasDamsteen() )
+		node.getDamsteen().addMove( getNodeAt(getNodeAt(coord).getCoordRight()) );
 
 	    // Kijk of er een vakje linksboven vrij is:
 	} else if ((coord.getX() >= 1 && coord.getX() == kolommen - 1)
 		&& coord.getY() < rijen - 1) {
-	    res[0] = speelbord[coord.getX()][coord.getY()].getCoordLeft();
-	    res[1] = null;
-
-	    // Geen vakjes vrij. Niks om te highlighten
-	} else {
-	    res[0] = null;
-	    res[1] = null;
-	}
-	return res;
+	    if (!getNodeAt(getNodeAt(coord).getCoordLeft()).hasDamsteen())
+		node.getDamsteen().addMove( getNodeAt(getNodeAt(coord).getCoordLeft()) );
+	} 
     }
 
     /**
