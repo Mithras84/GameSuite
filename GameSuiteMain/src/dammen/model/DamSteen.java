@@ -20,13 +20,27 @@ public class DamSteen {
     private static int COUNT; //Zodat alle damstenen een Unique ID hebben.
     private int id;
     
-    private ArrayList<Nodes> moveList;
+    private ArrayList<Moves> moveList;
+    
+    private boolean ownedByPlayer;
 
-    public DamSteen(String kleur) {
+    /**
+     * @return the ownedByPlayer
+     */
+    public boolean isOwnedByPlayer() {
+        return ownedByPlayer;
+    }
+
+    public DamSteen(String kleur, Player player) {
 	if (kleur == "zwart")
 	    this.kleur = Color.black;
 	else
 	    this.kleur = Color.white;
+	
+	if (this.kleur == player.getKleur())
+	    ownedByPlayer = true;
+	else 
+	    ownedByPlayer = false;
 	
 	DamSteen.COUNT++;
 	id = DamSteen.COUNT;
@@ -34,22 +48,26 @@ public class DamSteen {
 	moveList = new ArrayList<> ();
     }
     
-    public void addMove (Nodes node) {
-	moveList.add(node);
+    public void addMove (Nodes currentNode, Nodes targetNode) {
+	moveList.add(new Moves (currentNode, targetNode));	
+    }
+    
+    public void setMovesToNull () {
+	moveList.clear();
     }
     
     public boolean hasMoves () {
 	return !moveList.isEmpty();
     }
     
-    public ArrayList<Nodes> getMoveList () {
+    public ArrayList<Moves> getMoveList () {
 	return moveList;
     }
     
-    public Nodes[] getMoveToArray () {
+    public Moves[] getMoveToArray () {
 	
 	System.out.println(moveList.size());
-	Nodes[] tmp = (Nodes[]) moveList.toArray(new Nodes[moveList.size()]);
+	Moves[] tmp = (Moves[]) moveList.toArray(new Moves[moveList.size()]);
 	return tmp;
     }
 

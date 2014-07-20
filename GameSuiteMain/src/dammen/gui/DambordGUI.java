@@ -16,10 +16,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import dammen.model.DamBord;
+import dammen.model.Moves;
 import dammen.model.Nodes;
 
 /**
  * Class description
+ * De main GUI klasse. Zorgt ervoor dat het virtuele dambord op het scherm verschijnt, en dat de gebruiker 
+ * kan dammen :)
  * 
  * @version 1.00 15 jul. 2014
  * @author Pieter
@@ -31,9 +34,13 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
     BordPanel bord;
     JLabel label;
 
-    private DamBord dambord;
+    private DamBord dambord;    
+    private Nodes selectedNode;
     
-
+    /**
+     * Zet de DamBord klasse, en maak het frame en de componenten.
+     * @param dambord
+     */
     public DambordGUI(DamBord dambord) {
 	this.dambord = dambord;
 
@@ -42,7 +49,10 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
 	maakDambord();
 	updateBord();
     }
-
+    
+    /**
+     * Zet de waarden van het frame.
+     */
     private void initFrame() {
 	frame = new JFrame( "Dammen" );
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,7 +63,10 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
 	
 	frame.setLocationRelativeTo(null);
     }
-
+    
+    /**
+     * Maak alle visuele componenten aan.
+     */
     private void initPanels() {
 	
 	panel = new JPanel();
@@ -73,21 +86,31 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
 	
 	frame.add(panel);
     }
-
+    
+    /**
+     * Deze functie geeft het virtuele speelbord door aan het visuele speelbord. In de klasse BordPanel (extends
+     * JPanel) wordt op basis van NodeComponents (visuele nodes, gekoppeld aan virtuele nodes) een visueel bord gecreeerd.
+     * @see BordPanel
+     */
     public void maakDambord() {
 	bord.addSpeelBord(dambord.getSpeelbord());
 	frame.pack();
     }
 
+    /**
+     * Deze functie zorgt ervoor dat op basis van het virtuele dambord (de speelveld array in de klasse Dambord) 
+     * mouseListeners worden toegewezen aan Nodes die een damsteen hebben met bewegingsvrijheid.
+     * Alleen de damstenen van de menselijke speler kunnen geselecteerd worden.
+     * Als er al een damsteen geselecteerd is, dan zorgt deze functie ervoor dat de nodes waar de damsteen heen kan gaan
+     * ook selecteerbaar zijn. 
+     *
+     */
     public void updateBord() {
 	maakDambord();
 	for (int i = 0; i < dambord.getKolommen(); i++) {
 	    for (int j = 0; j < dambord.getRijen(); j++) {
-		if ( 
-			(dambord.getNodeAt(i, j).hasDamsteen() && dambord.getNodeAt(i, j).getDamsteen().hasMoves() ) 
-			&&
-			dambord.getNodeAt(i, j).getDamsteen().getKleur() == dambord.getSpeler().getKleur() 
-		) {
+		if ( (dambord.getNodeAt(i, j).hasDamsteen() && dambord.getNodeAt(i, j).getDamsteen().hasMoves() ) &&
+			dambord.getNodeAt(i, j).getDamsteen().isOwnedByPlayer() ) {
 		    bord.getNodeComponent(i, j).addMouseListener(this);
 		    bord.getNodeComponent(i, j).addMouseMotionListener(this);
 		} else if (dambord.getNodeAt(i, j).isHighLight()) {
@@ -98,22 +121,58 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
 	}
     }
     
-    /*
-     * (non-Javadoc)
+    /**
+     * Overridden method to handle mouseClicks
+     * Deze methode maakt het mogelijk om een selecteerbare Node aan te klikken, en deze - en de Nodes met mogelijke
+     * zetten - te highlighten. Vervolgens krijgen de nodes met een highlight een mouseListener toegewezen,
+     * en krijgt de selectedNode variabele een referentie naar de geselecteerde Node.
+     * Als de geselecteerde Node niet null is (i.e. een Node met mogelijke moves is geselecteerd), en er wordt een vrije 
+     * nabijgelegenen Node aangeklikt, dan wordt de damsteen op de oorspronkelijke node verplaatst naar de nieuwe node.
      * 
-     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     * Vervolgens wordt het bord geupdate.
+     * 
      */
     @Override
     public void mouseClicked(MouseEvent e) {
 	// TODO Auto-generated method stub
-	NodeComponent node = (NodeComponent)e.getComponent();
-	label.setText( node.getCoord().toString() );
-	node.getNode().setHighLight(true);
-	Nodes[] tmp = node.getNode().getDamsteen().getMoveToArray();
-	for (Nodes n : tmp) {
-	    n.setHighLight(true);
+	if (selectedNode == null) {
+	    highlightNodes(e);
+	} else if (selectedNode != null) {
+	    moveSteen(e);
 	}
 	updateBord();
+    }
+
+    /**
+     * Fucntie voor het verplaatsen van een damsteen van de eerder geselecteerde Node naar een 
+     * nieuwe vrije Node.
+     * @param MouseEvent e
+     */
+    private void moveSteen(MouseEvent e) {
+	NodeComponent node = (NodeComponent)e.getComponent();	
+	Moves[] tmp = selectedNode.getDamsteen().getMoveToArray();
+	
+	for (Moves m : tmp) {
+	    if (m.getTargetNode() == node.getNode())
+		dambord.makeMove(m);
+	}	
+	selectedNode = null;
+    }
+
+    /**
+     * Functie voor het highlighten van een geselecteerde Node (met damsteen die te verplaatsen is), en 
+     * de Nodes waar de damsteen heen kan.
+     * @param MouseEvent e
+     */
+    private void highlightNodes(MouseEvent e) {
+	NodeComponent node = (NodeComponent)e.getComponent();
+	label.setText( node.getCoord().toString() );
+	selectedNode = node.getNode();
+	selectedNode.setHighLight(true);
+	Moves[] tmp = selectedNode.getDamsteen().getMoveToArray();
+	for (Moves m : tmp) {
+	    m.getTargetNode().setHighLight(true);
+	}
     }
 
     /*

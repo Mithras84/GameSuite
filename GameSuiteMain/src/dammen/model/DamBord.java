@@ -55,13 +55,16 @@ public class DamBord {
 	maakBord();
 	vulBord();
 	setMoves();
+	showMoves();
     }
     
     public void setMoves () {
 	for (int i = 0; i < kolommen; i++) {
 	    for (int j = 0; j < rijen; j++) {
-		if (speelbord[i][j].hasDamsteen())
+		if (speelbord[i][j].hasDamsteen()) {
+		    speelbord[i][j].getDamsteen().setMovesToNull();
 		    setPossibleMoves(speelbord[i][j]);
+		}
 	    }
 	}
     }
@@ -83,12 +86,18 @@ public class DamBord {
     private void maakBord() {
 	
 	ScreenSize.setDammenSize(kolommen, rijen);
+	Coord.setLimits(kolommen, rijen);
 	
 	for (int i = 0; i < kolommen; i++) {
 	    for (int j = 0; j < rijen; j++) {
-		this.speelbord[i][j] = new Nodes(i, j);
+		try {
+		    this.speelbord[i][j] = new Nodes(i, j);
+		} catch (Exception e) {
+		    System.out.println("This error will never occur :)");
+		}
 	    }
-	}	
+	}
+	
     }
 
     /**
@@ -100,8 +109,7 @@ public class DamBord {
 	
 	for (int i = 0; i < rijen; i++) {
 	    
-	    // De kant van de Speler (@todo-> Laat speler kleur kiezen, nu
-	    // standaard zwart).
+	    // De kant van de Speler 
 	    if (i < (rijen / 2) - 1)
 		kleur = speler.getKleurToString();
 	    // De kant van de AI.
@@ -115,9 +123,15 @@ public class DamBord {
 	    // Als Node zwart is, voeg een damsteen toe:
 	    for (int j = 0; j < kolommen; j++) {
 		if (this.speelbord[j][i].getKleur() == "zwart")
-		    this.speelbord[j][i].setDamSteen(new DamSteen(kleur));
+		    this.speelbord[j][i].setDamSteen(new DamSteen(kleur, speler));
 	    }
 	}
+    }
+    
+    public void makeMove (Moves move) {
+	move.makeMove();
+	setMoves();
+	
     }
     
     public Nodes getNodeAt (Coord coord) {
@@ -180,26 +194,30 @@ public class DamBord {
      */
     public void setPossibleMoves (Nodes node) {
 	Coord coord = node.getCoord();
-
-	// Kijk of er een vakje linksboven en rechtsboven vrij is:
-	if ((coord.getX() >= 1 && coord.getX() < kolommen - 1)
-		&& coord.getY() < rijen - 1) {
-	    if ( !getNodeAt(getNodeAt(coord).getCoordLeft()).hasDamsteen() )
-		node.getDamsteen().addMove( getNodeAt(getNodeAt(coord).getCoordLeft()) );
-	    if ( !getNodeAt(getNodeAt(coord).getCoordRight()).hasDamsteen() )
-		node.getDamsteen().addMove( getNodeAt(getNodeAt(coord).getCoordRight()) );
-	    // Kijk of er een vakje rechtsboven vrij is:
-	} else if ((coord.getX() == 0 && coord.getX() < kolommen)
-		&& coord.getY() < rijen - 1) {
-	    if ( !getNodeAt(getNodeAt(coord).getCoordRight()).hasDamsteen() )
-		node.getDamsteen().addMove( getNodeAt(getNodeAt(coord).getCoordRight()) );
-
-	    // Kijk of er een vakje linksboven vrij is:
-	} else if ((coord.getX() >= 1 && coord.getX() == kolommen - 1)
-		&& coord.getY() < rijen - 1) {
-	    if (!getNodeAt(getNodeAt(coord).getCoordLeft()).hasDamsteen())
-		node.getDamsteen().addMove( getNodeAt(getNodeAt(coord).getCoordLeft()) );
-	} 
+	
+	try {
+	    // Kijk of er een vakje linksboven en rechtsboven vrij is:
+	    if ((coord.getX() >= 1 && coord.getX() < kolommen - 1)
+        	&& coord.getY() < rijen - 1) {
+       	    	if ( !getNodeAt(getNodeAt(coord).getCoordLeft()).hasDamsteen() )
+       	    	    node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordLeft()) );
+       	    	if ( !getNodeAt(getNodeAt(coord).getCoordRight()).hasDamsteen() )
+       	    	    node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordRight()) );
+       	    	// Kijk of er een vakje rechtsboven vrij is:
+	    } else if ((coord.getX() == 0 && coord.getX() < kolommen)
+        	&& coord.getY() < rijen - 1) {
+        	   if ( !getNodeAt(getNodeAt(coord).getCoordRight()).hasDamsteen() )
+        	       node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordRight()) );
+        
+        	    // Kijk of er een vakje linksboven vrij is:
+	    } else if ((coord.getX() >= 1 && coord.getX() == kolommen - 1)
+		    && coord.getY() < rijen - 1) {
+		if (!getNodeAt(getNodeAt(coord).getCoordLeft()).hasDamsteen())
+        		node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordLeft()) );
+        	} 
+	} catch (Exception e) {
+	    System.out.println (e.getMessage() + " at Node " + node.toString());
+	}
     }
 
     /**
@@ -221,5 +239,15 @@ public class DamBord {
 		+ speelbord[1][1].toString());
 	System.out.println("Neighbour right of coord 1 : 1 = "
 		+ speelbord[1][1].toString());
+    }
+    
+    public void showMoves () {
+	for (int i = 0; i < kolommen; i++) {
+	    for (int j = 0; j < rijen; j++) {
+		if (speelbord[i][j].hasDamsteen() &&  speelbord[i][j].getDamsteen().hasMoves() ) {
+		    System.out.println("Steen op node " + speelbord[i][j].toString() + " has moves");
+		}
+	    }
+	}
     }
 }

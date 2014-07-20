@@ -30,15 +30,11 @@ public class ImageHelper {
 	    veldDonker = ImageIO.read(new File 
 		    ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\src\\dammen\\gui\\img\\VeldDonker.jpg"));
 	    veldLicht = ImageIO.read
-		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\src\\dammen\\gui\\img\\VeldLicht.jpg"));
+		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\src\\dammen\\gui\\img\\VeldLicht2.jpg"));
 	    veldDonkerWit = ImageIO.read
 		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\src\\dammen\\gui\\img\\VeldDonkerMetSteenWit.jpg"));
 	    veldDonkerZwart = ImageIO.read
 		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\src\\dammen\\gui\\img\\VeldDonkerMetSteenZwart.jpg"));
-	    veldLichtWit = ImageIO.read
-		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\src\\dammen\\gui\\img\\VeldLichtMetSteenWit.jpg"));
-	    veldLichtZwart = ImageIO.read
-		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\src\\dammen\\gui\\img\\VeldLichtMetSteenZwart.jpg"));
 	} catch (IOException e) {
 	    System.out.println(e.toString());
 	    System.out.println("File not found :(");

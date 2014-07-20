@@ -17,6 +17,7 @@ package dammen.model;
  * @author Pieter
  */
 public class Nodes {
+    
     private String kleur;
     private Coord coord;
     private DamSteen damsteen;
@@ -30,8 +31,9 @@ public class Nodes {
      * 
      * @param x
      * @param y
+     * @throws Exception 
      */
-    public Nodes(int x, int y) {
+    public Nodes(int x, int y) throws Exception {
 	coord = new Coord(x, y);
 	if (x % 2 == 1 && y % 2 == 1)
 	    this.kleur = "zwart";
@@ -121,18 +123,28 @@ public class Nodes {
      * Geef de coordinaten van de Node links boven deze Node.
      * 
      * @return Coord van node linksboven
+     * @throws Exception 
      */
-    public Coord getCoordLeft() {
-	return new Coord(this.coord.getX() - 1, this.coord.getY() + 1);
+    public Coord getCoordLeft() throws Exception {
+	if (this.damsteen.isOwnedByPlayer())
+	    //if ()
+	    return new Coord(this.coord.getX() - 1, this.coord.getY() + 1);
+	else 
+	    return new Coord(this.coord.getX() - 1, this.coord.getY() - 1);
     }
 
     /**
      * Geef de coordinaten van de Node rechts boven deze Node.
      * 
      * @return Coord van node rechtsboven
+     * @throws Exception 
      */
-    public Coord getCoordRight() {
-	return new Coord(this.coord.getX() + 1, this.coord.getY() + 1);
+    public Coord getCoordRight() throws Exception {
+	if (this.damsteen.isOwnedByPlayer()) {
+	    return new Coord(this.coord.getX() + 1, this.coord.getY() + 1);
+	} else {
+	    return new Coord(this.coord.getX() + 1, this.coord.getY() - 1);
+	}
     }
 
     /**

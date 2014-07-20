@@ -17,6 +17,10 @@ import dammen.model.Nodes;
 
 /**
  * Class description
+ * De visuele component van een Node.
+ * Bevat een referentie naar de Node in de speelveld array.
+ * Deze klasse regelt het visuele gebeuren van een vakje op het dambord,
+ * zoals highlighten, damsteen laten zien, achtergrond, etc.
  * 
  * @version		1.00 17 jul. 2014
  * @author 		Pieter
@@ -32,6 +36,10 @@ public class NodeComponent extends JComponent {
     
     private BufferedImage image;
         
+    /**
+     * Constructor. Basis attributen setten op basis van de Node uit de speelveld array.
+     * @param node
+     */
     public NodeComponent (Nodes node) {
 	this.node = node;
 	
@@ -54,21 +62,28 @@ public class NodeComponent extends JComponent {
         return node;
     }
     
+    /**
+     * 
+     * @return Coord van de Node
+     */
     public Coord getCoord () {
 	return this.node.getCoord();
     }   
     
+    /**
+     * Voor custom preferred size.
+     */
     public Dimension getPreferredSize() {
 	this.getSize(getSize());
         return new Dimension(nodeSize,nodeSize);
     }
     
     /**
-     * Overridden functie. Paint deze node op het bord, maak gebruik van
-     * dynamische NODESIZE in de klasse
+     * Hier vindt alle painting plaats.
+     * Kijkt naar de eigenschappen van de virtuele Node, en paint deze op het scherm.
      * 
-     * @see ScreenSize. Bepaal de kleur van het vakje op basis van de kleur van
-     *      deze node.
+     * @see ScreenSize 
+     * @see Nodes
      */
     public void paintComponent(Graphics g) {
 	super.paintComponent(g);	
@@ -87,6 +102,11 @@ public class NodeComponent extends JComponent {
 	
     }
     
+    /**
+     * Helper functie voor paintComponent.
+     * Teken een highlight op basis van de gegevens van de Node.
+     * @param g2d
+     */
     public void drawHighlight (Graphics2D g2d) {
 	g2d.setStroke(new BasicStroke(4));
 	if (node.hasDamsteen())
@@ -97,21 +117,22 @@ public class NodeComponent extends JComponent {
 	g2d.setColor(color);
     }
     
+    /**
+     * Helper functie voor paintComponent.
+     * Teken een damsteen op basis van de gegevens van de Node.
+     * @param g2d
+     */
     public void drawDamSteen (Graphics2D g2d) {
 
 	BufferedImage img = null;
 	if (this.color == Color.black) {
+	    
 	    if (this.node.getDamsteen().getKleur() == Color.black)
 		img = ImageHelper.veldDonkerZwart;
+	    
 	    else if (this.node.getDamsteen().getKleur() == Color.white)
 		img = ImageHelper.veldDonkerWit;
-	} else if (this.color == Color.white) {
-	    if (this.node.getDamsteen().getKleur() == Color.black)
-		img = ImageHelper.veldLichtZwart;
-	    else if (this.node.getDamsteen().getKleur() == Color.white)
-		img = ImageHelper.veldLichtWit;
-	}
-	
+	}	
 	//g2d.drawImage(img, 0,0,this);
 	g2d.drawImage(img, 0, 0, nodeSize, nodeSize, null);
     }
