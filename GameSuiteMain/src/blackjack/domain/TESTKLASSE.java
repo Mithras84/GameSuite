@@ -1,4 +1,4 @@
-package blackjackdomain;
+package blackjack.domain;
 
 public class TESTKLASSE {
 

@@ -1,34 +1,35 @@
-package blackjackdomain;
+package blackjack.domain;
 
 import java.util.ArrayList;
 
-public class BlackJackBank implements BlackJackSpeler {
-  double credits = 0.0;      
+public class BlackJackAI implements BlackJackSpeler{
+  double credits = 0.0;     
   boolean status = false;
   ArrayList <KAART> hand = null;  
-  String naam = "Bank";
+  String naam = null;
   double inzet = 0.0;
   int score = 0;
   
-  public BlackJackBank (){   
+  public BlackJackAI (){       
     mijnInit();
     }
     
     public void mijnInit(){
-      credits = 500000.0;  
+      credits = 500.0;
       ArrayList <KAART> hand = new ArrayList <KAART> (); 
       this.hand=hand;
     }  
   
   public double getCredits() {    
-    return -1;
+    return credits;    
+  }  
+  
+  public void setNaam(String naam){
+    this.naam =  naam;
   }
   
   public String getNaam(){
     return naam;
-  }
-  
-  public void setNaam(String naam){  
   }
   
   public void addKAART (KAART kaart){
@@ -47,21 +48,24 @@ public class BlackJackBank implements BlackJackSpeler {
   public int handLengte(){
     return hand.size();    
   }
- 
-  public void setCredits(double inzet) {     
+  
+  public void setCredits(double inzet) {    
+    credits = credits - inzet;    
   }
   
   public void setInzet(double inzet){
+  this.inzet = inzet;   
+  this.setCredits(inzet);
   }
-    
+  
   public double getInzet (){
-  return -1;
+  return inzet;
   }
   
   public void setStatusTrue(){
     status = true;
   }  
-  
+    
   public boolean getStatus(){
     return status;
   }

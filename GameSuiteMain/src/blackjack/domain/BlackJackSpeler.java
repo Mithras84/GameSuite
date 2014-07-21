@@ -1,6 +1,6 @@
-package blackjackdomain;
+package blackjack.domain;
 
-import blackjackdomain.KAART;
+import blackjack.domain.KAART;
 import java.util.ArrayList;
 
 // constructor
