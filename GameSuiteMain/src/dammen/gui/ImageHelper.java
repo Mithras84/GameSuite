@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 /**
  * Class description
  * 
+ * 
  * @version		1.00 17 jul. 2014
  * @author 		Pieter
  */
@@ -26,15 +27,16 @@ public class ImageHelper {
     public static BufferedImage veldLichtZwart;
     
     static {
+	
+	//Relative paths dont work :(
 	try {
-	    veldDonker = ImageIO.read(new File 
-		    ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\src\\dammen\\gui\\img\\VeldDonker.jpg"));
+	    veldDonker = ImageIO.read(new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\resource\\img\\VeldDonker.jpg"));
 	    veldLicht = ImageIO.read
-		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\src\\dammen\\gui\\img\\VeldLicht2.jpg"));
+		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\resource\\img\\VeldLicht2.jpg"));
 	    veldDonkerWit = ImageIO.read
-		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\src\\dammen\\gui\\img\\VeldDonkerMetSteenWit.jpg"));
+		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\resource\\img\\VeldDonkerMetSteenWit.jpg"));
 	    veldDonkerZwart = ImageIO.read
-		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\src\\dammen\\gui\\img\\VeldDonkerMetSteenZwart.jpg"));
+		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\resource\\img\\VeldDonkerMetSteenZwart.jpg"));
 	} catch (IOException e) {
 	    System.out.println(e.toString());
 	    System.out.println("File not found :(");

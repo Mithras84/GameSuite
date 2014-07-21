@@ -132,6 +132,7 @@ public class DamBord {
 	move.makeMove();
 	setMoves();
 	
+	// Nu mag de AI.
     }
     
     public Nodes getNodeAt (Coord coord) {
