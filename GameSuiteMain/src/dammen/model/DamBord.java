@@ -55,7 +55,7 @@ public class DamBord {
 	maakBord();
 	vulBord();
 	setMoves();
-	showMoves();
+	//showMoves();
     }
     
     public void setMoves () {
@@ -129,12 +129,19 @@ public class DamBord {
     }
     
     public void makeMove (Moves move) {
+	//Move van de speler.
 	move.makeMove();
 	setMoves();
 	
 	// Nu mag de AI.
 	Moves aiMove = ai.makeMove(speelbord);
 	aiMove.makeMove();
+	
+	//Highlight de move van de AI
+	aiMove.getCurrentNode().setHighLight(true);
+	aiMove.getTargetNode().setHighLight(true);
+	
+	//Moves opnieuw bepalen
 	setMoves();
     }
     
@@ -232,6 +239,9 @@ public class DamBord {
 		+ speelbord[1][1].toString());
     }
     
+    /**
+     * Test functie. Laat alle moves zien in de console.
+     */
     public void showMoves () {
 	for (int i = 0; i < kolommen; i++) {
 	    for (int j = 0; j < rijen; j++) {

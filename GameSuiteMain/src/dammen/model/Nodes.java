@@ -132,7 +132,7 @@ public class Nodes {
 	    else 
 		return new Coord(this.coord.getX() - 1, this.coord.getY() - 1);
 	} catch (Exception e) {
-	    System.out.println(e.getMessage());
+	    //System.out.println(e.getMessage());
 	    return null;
 	}
     }
@@ -151,7 +151,7 @@ public class Nodes {
 		return new Coord(this.coord.getX() + 1, this.coord.getY() - 1);
 	    }
 	} catch (Exception e) {
-	    System.out.println(e.getMessage());
+	    //System.out.println(e.getMessage());
 	    return null;
 	}
     }

@@ -60,7 +60,7 @@ public class BordPanel extends JPanel {
     public void paintSpeelbord(Nodes[][] speelbord) {
 	nodeList = new NodeComponent [speelbord.length][speelbord[0].length];
 	
-	System.out.println (speelbord.length + " " + speelbord[0].length);
+	//System.out.println (speelbord.length + " " + speelbord[0].length);
 	
 	c.weightx = 1;
 	c.weighty = 1;	
