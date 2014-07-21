@@ -12,11 +12,13 @@ public class Kaarten {
 	 * @author Koen
 	 */
 
-	private int aantal = 8;
+	private int nummer = 0;
 	private String kaartsoort = "pony";
+	
 
-	public Kaarten (){
-		
+	public Kaarten (String kaartsoort, int nummer){
+		this.kaartsoort = kaartsoort;
+		this.nummer = nummer;
 	}
 
 	public void setKaartSet(String kaartsoort) {
@@ -25,6 +27,14 @@ public class Kaarten {
 	
 	public String getKaartSet(){
 		return kaartsoort;
+	}
+	public void setNummer(int nummer){
+		this.nummer = nummer;
+		
+	}
+	
+	public int getNummer(){
+		return nummer;
 	}
 
 }
