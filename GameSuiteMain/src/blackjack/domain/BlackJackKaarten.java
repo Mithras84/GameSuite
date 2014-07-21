@@ -1,8 +1,8 @@
-package blackjackdomain;
+package blackjack.domain;
 
 import java.util.ArrayList;
 import java.util.Random;
-import blackjackdomain.KAART;
+import blackjack.domain.KAART;
 
 public class BlackJackKaarten {
   KAART [] kaartenLijst = null;   
