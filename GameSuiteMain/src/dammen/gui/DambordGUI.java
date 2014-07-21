@@ -5,6 +5,7 @@ package dammen.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.EventQueue;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -93,6 +94,7 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
      * @see BordPanel
      */
     public void maakDambord() {
+	
 	bord.addSpeelBord(dambord.getSpeelbord());
 	frame.pack();
     }

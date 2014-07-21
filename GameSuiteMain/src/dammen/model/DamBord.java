@@ -136,7 +136,10 @@ public class DamBord {
     }
     
     public Nodes getNodeAt (Coord coord) {
-	return speelbord[coord.getX()][coord.getY()];
+	if (coord != null)
+	    return speelbord[coord.getX()][coord.getY()];
+	else 
+	    return null;
     }
     
     public Nodes getNodeAt (int x, int y) {
@@ -195,8 +198,6 @@ public class DamBord {
      */
     public void setPossibleMoves (Nodes node) {
 	Coord coord = node.getCoord();
-	
-	try {
 	    // Kijk of er een vakje linksboven en rechtsboven vrij is:
 	    if ((coord.getX() >= 1 && coord.getX() < kolommen - 1)
         	&& coord.getY() < rijen - 1) {
@@ -216,9 +217,7 @@ public class DamBord {
 		if (!getNodeAt(getNodeAt(coord).getCoordLeft()).hasDamsteen())
         		node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordLeft()) );
         	} 
-	} catch (Exception e) {
-	    System.out.println (e.getMessage() + " at Node " + node.toString());
-	}
+	
     }
 
     /**
