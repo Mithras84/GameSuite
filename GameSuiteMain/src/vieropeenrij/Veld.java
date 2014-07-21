@@ -21,6 +21,7 @@ public class Veld extends JPanel{
   private static final int RANDLENGTE = 50;
   private Rectangle2D rand = null;
   private Ellipse2D cirkel = null;
+  private int beurt = 0;
   Vakje vakje = null;
   Vakje[][] raster = new Vakje[KOLOMMEN][RIJEN];
   
@@ -50,11 +51,8 @@ public class Veld extends JPanel{
         g2d.setColor(Color.BLUE);
         g2d.fill(rand);
         cirkel = new Ellipse2D.Double(i*RANDLENGTE, j*RANDLENGTE, RANDLENGTE * 0.9, RANDLENGTE * 0.9);
-        if(raster[i][j].getGevuld() && raster[i][j].getSpeler()){
-          g2d.setColor(Color.RED);
-        }
-        else if(raster[i][j].getGevuld() && raster[i][j].getSpeler() == false){
-          g2d.setColor(Color.YELLOW);
+        if(raster[i][j].getGevuld()){
+          g2d.setColor(raster[i][j].getKleur());
         }
         else{
           g2d.setColor(Color.WHITE);
@@ -63,9 +61,27 @@ public class Veld extends JPanel{
       }
     }
   }
+
+  /**
+   * Levert het raster van vakjes waarop het veld gebaseerd is.
+   * @return  2 dimensionale array van vakjes.
+   */
+  public Vakje[][]getRaster(){
+    return raster;
+  }
   
-  public Vakje getVakje(int kolom, int rij){
-    vakje = raster[kolom][rij];
-    return vakje;
+  /**
+   * Verhoogt het aantal beurten met 1.
+   */
+  public void volgendeBeurt(){
+    beurt = beurt + 1;
+  }
+  
+  /**
+   * Vraagt op welk beurtnummer het is.
+   * @return  het beurtnummmer
+   */
+  public int getBeurt(){
+    return beurt;
   }
 }

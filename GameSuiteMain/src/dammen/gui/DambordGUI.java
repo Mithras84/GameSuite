@@ -47,7 +47,9 @@ public class DambordGUI implements MouseListener, MouseMotionListener, Component
 	initFrame();
 	initPanels();
 	maakDambord();
+	
 	updateBord();
+	
     }
     
     /**

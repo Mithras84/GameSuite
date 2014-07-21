@@ -23,6 +23,7 @@ public class DamSteen {
     private ArrayList<Moves> moveList;
     
     private boolean ownedByPlayer;
+    private boolean isDam;
 
     /**
      * @return the ownedByPlayer
@@ -50,6 +51,10 @@ public class DamSteen {
     
     public void addMove (Nodes currentNode, Nodes targetNode) {
 	moveList.add(new Moves (currentNode, targetNode));	
+    }
+    
+    public void addMove (Moves move) {
+	moveList.add(move);
     }
     
     public void setMovesToNull () {
@@ -107,5 +112,19 @@ public class DamSteen {
     public String toString() {
 	return this.getKleurToString() + " ID=" + id + " " + coord.getX() + ":"
 		+ coord.getY();
+    }
+
+    /**
+     * @return the isDam
+     */
+    public boolean isDam() {
+	return isDam;
+    }
+
+    /**
+     * @param isDam the isDam to set
+     */
+    public void setDam(boolean isDam) {
+	this.isDam = isDam;
     }
 }

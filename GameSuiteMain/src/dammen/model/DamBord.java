@@ -126,6 +126,8 @@ public class DamBord {
 		    this.speelbord[j][i].setDamSteen(new DamSteen(kleur, speler));
 	    }
 	}
+	
+	getNodeAt(3,3).getDamsteen().setDam(true);
     }
     
     public void makeMove (Moves move) {
@@ -138,8 +140,8 @@ public class DamBord {
 	aiMove.makeMove();
 	
 	//Highlight de move van de AI
-	aiMove.getCurrentNode().setHighLight(true);
-	aiMove.getTargetNode().setHighLight(true);
+	aiMove.getCurrentNode().setAIHighlight(true);
+	aiMove.getTargetNode().setAIHighlight(true);
 	
 	//Moves opnieuw bepalen
 	setMoves();
@@ -153,7 +155,10 @@ public class DamBord {
     }
     
     public Nodes getNodeAt (int x, int y) {
-	return speelbord[x][y];
+	if ((x >= 0 && x < kolommen) && (y >= 0 && y < rijen) )
+	    return speelbord[x][y];
+	else 
+	    return null;
     }
 
     /**
@@ -203,19 +208,88 @@ public class DamBord {
      * Deze mogelijke zet wordt opgeslagen in het damsteen object in de node.
      * 
      * @todo Moet netter en dynamischer. AI moet ook gebruik kunnen maken van
-     *       deze functie!
+     *       deze functie! Update.. Is in ieder geval netter, en maakt gebruik van
+     *       Nodes om beperkingen te kunnen bepalen. Volgende obstakel is het slaan van
+     *       damstenen.
      * @param Nodes node
      */
     public void setPossibleMoves (Nodes node) {
+	checkForMoveL(node, getLeftNode(node));
+	checkForMoveR(node, getRightNode(node));
+    }
+    /*
+    public void setPossibleMoves (Nodes node) {
 	Coord coord = node.getCoord();
 	
-	if (node.getCoordLeft() != null && !getNodeAt( node.getCoordLeft() ).hasDamsteen() )  {
-	    node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordLeft()) );
+	if (node.getCoordLeft() != null ) {
+	    if (getNodeAt( node.getCoordLeft() ).hasDamsteen() ) {
+		if (getNodeAt( node.getCoordLeft() ).getDamsteen().isOwnedByPlayer()) {
+		    DamSteen steen = getNodeAt( node.getCoordLeft() ).getDamsteen();
+		}
+	    } else 
+		node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordLeft()) );
 	} 
 	
 	if (node.getCoordRight() != null && !getNodeAt( node.getCoordRight() ).hasDamsteen() ) {
 	    node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordRight()) );
 	}
+    }
+    */
+
+    /**
+     * @param nodeC -> Current (selected) node
+     * @param nodeL -> Target node
+     */
+    private void checkForMoveL(Nodes nodeC, Nodes nodeL) {
+	if (nodeL != null) {
+	    if (!nodeL.hasDamsteen() ) {
+		//Vrij vakje gevonden. Toevoegen als mogelijke 'move'.
+		nodeC.getDamsteen().addMove( new Moves(nodeC, nodeL) );
+		if (nodeC.getDamsteen().isDam()) {
+		    checkForMoveL( nodeC,  getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() +1) );
+		    //Argh!! Ik wil niet het hele bord selecteren.. 
+		    //this.checkForMoveL( nodeC,  getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() -1) );
+		}
+	    } else if (nodeL.getDamsteen().isOwnedByPlayer() != nodeC.getDamsteen().isOwnedByPlayer()) {
+		if ( getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() +1) != null && !getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() +1).hasDamsteen() )
+		    System.out.println ("Iemand kan slaan!");
+	    }
+	}
+    }
+    
+    
+    /**
+     * @param nodeC -> Current (selected) node
+     * @param nodeL -> Target node
+     */
+    private void checkForMoveR(Nodes nodeC, Nodes nodeR) {
+	if (nodeR != null) {
+	    if (!nodeR.hasDamsteen() ) {
+		//Vrij vakje gevonden. Toevoegen als mogelijke 'move'.
+		nodeC.getDamsteen().addMove( new Moves(nodeC, nodeR) );
+		if (nodeC.getDamsteen().isDam()) {
+		    checkForMoveR(nodeC, getNodeAt(nodeR.getXCoord() +1, nodeR.getYCoord() +1) );
+		    //Argh!! Zelfde probleem.. Misschien niet recursive aanpakken?
+		}
+	    } else if (nodeR.getDamsteen().isOwnedByPlayer() != nodeC.getDamsteen().isOwnedByPlayer()) {
+		if ( getNodeAt(nodeR.getXCoord() +1, nodeR.getYCoord() +1) != null && !getNodeAt(nodeR.getXCoord() +1, nodeR.getYCoord() +1).hasDamsteen() )
+		    System.out.println ("Iemand kan slaan!");
+	    }
+	}
+    }
+    
+    private Nodes getLeftNode (Nodes node) {
+	if (node.getCoordLeft() != null ) 
+	    return getNodeAt(node.getCoordLeft());
+	else
+	    return null;
+    }
+    
+    private Nodes getRightNode (Nodes node) {
+	if (node.getCoordRight() != null )
+	    return getNodeAt(node.getCoordRight());
+	else
+	    return null;
     }
 
     /**

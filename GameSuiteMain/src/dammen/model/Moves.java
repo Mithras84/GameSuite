@@ -20,6 +20,8 @@ public class Moves {
     
     /**
      * Constructor
+     * Param1 : Current node
+     * Param2 : Target node
      * 
      * @param current node
      * @param target node 

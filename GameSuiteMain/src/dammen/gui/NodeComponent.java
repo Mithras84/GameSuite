@@ -98,9 +98,10 @@ public class NodeComponent extends JComponent {
 	    drawDamSteen (g2d);    
 	}
 	
-	if (node.isHighLight()) {
+	if (node.isHighLight() || node.isAIHighlight()) {
 	    drawHighlight(g2d);
 	    node.setHighLight(false);
+	    node.setAIHighlight(false);
 	}
 	
     }
@@ -112,10 +113,17 @@ public class NodeComponent extends JComponent {
      */
     public void drawHighlight (Graphics2D g2d) {
 	g2d.setStroke(new BasicStroke(4));
-	if (node.hasDamsteen())
-	    g2d.setColor(Color.green);
-	else 
+	if (node.hasDamsteen()) {
+	    if (node.isAIHighlight())
+		g2d.setColor(Color.yellow);
+	    else
+		g2d.setColor(Color.green);
+	}
+	else if (node.isAIHighlight())
+	    g2d.setColor(Color.yellow);	    
+	else
 	    g2d.setColor(Color.blue);
+	
 	g2d.drawRect(0,0, nodeSize, nodeSize);
 	g2d.setColor(color);
     }

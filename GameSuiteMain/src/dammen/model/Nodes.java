@@ -24,7 +24,22 @@ public class Nodes {
     
     private boolean highLight;
     private boolean selected;
+    private boolean AIHighlight;
 
+
+    /**
+     * @return the aIHighlight
+     */
+    public boolean isAIHighlight() {
+        return AIHighlight;
+    }
+
+    /**
+     * @param aIHighlight the aIHighlight to set
+     */
+    public void setAIHighlight(boolean aIHighlight) {
+        AIHighlight = aIHighlight;
+    }
 
     /**
      * Creeer een nieuw Node (Veld) op basis van de opgegeven parameters.
@@ -127,7 +142,7 @@ public class Nodes {
      */
     public Coord getCoordLeft() {
 	try {
-	    if (this.damsteen.isOwnedByPlayer())
+	    if (this.hasDamsteen() && this.damsteen.isOwnedByPlayer())
 		return new Coord(this.coord.getX() - 1, this.coord.getY() + 1);
 	    else 
 		return new Coord(this.coord.getX() - 1, this.coord.getY() - 1);

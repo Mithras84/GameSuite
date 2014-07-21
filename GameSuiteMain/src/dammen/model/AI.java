@@ -42,6 +42,7 @@ public class AI {
     public Moves makeMove (Nodes[][] speelbord) {
 	allMoves = new ArrayList<>();
 	setMoves(speelbord);
+	
 	return selectMove ();
     }
     
