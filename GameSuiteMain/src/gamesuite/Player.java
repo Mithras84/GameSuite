@@ -1,4 +1,4 @@
-package player;
+package gamesuite;
 
 public class Player {
 

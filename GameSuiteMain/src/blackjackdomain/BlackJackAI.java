@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class BlackJackAI implements BlackJackSpeler{
   double credits = 0.0;     
-  boolean status = false;
+  boolean heeftBlackJack = false;
   ArrayList <KAART> hand = null;  
   String naam = null;
   double inzet = 0.0;
@@ -24,12 +24,41 @@ public class BlackJackAI implements BlackJackSpeler{
     return credits;    
   }  
   
+  public void setCredits(double inzet) {    
+	credits = credits - inzet;    
+  }
+  
+  public double getInzet (){
+    return inzet;
+  }
+  
+  public void setInzet(double inzet){
+    this.inzet = inzet;   
+	this.setCredits(inzet);
+  }
+  
   public void setNaam(String naam){
     this.naam =  naam;
   }
   
   public String getNaam(){
     return naam;
+  }
+    
+  public boolean getHeeftBlackJack(){
+    return heeftBlackJack;
+  }
+  
+  public void setHeeftBlackJack(){
+    heeftBlackJack = true;
+  }  
+  
+  public int getScore(){
+	return score;
+  }
+  
+  public void setScore(int punten){
+	score = punten;
   }
   
   public void addKAART (KAART kaart){
@@ -47,34 +76,5 @@ public class BlackJackAI implements BlackJackSpeler{
   
   public int handLengte(){
     return hand.size();    
-  }
-  
-  public void setCredits(double inzet) {    
-    credits = credits - inzet;    
-  }
-  
-  public void setInzet(double inzet){
-  this.inzet = inzet;   
-  this.setCredits(inzet);
-  }
-  
-  public double getInzet (){
-  return inzet;
-  }
-  
-  public void setStatusTrue(){
-    status = true;
-  }  
-    
-  public boolean getStatus(){
-    return status;
-  }
-  
-  public void setScore(int punten){
-    score = punten;
-  }
-  public int getScore(){
-    return score;
-  }
- 
+  } 
 }

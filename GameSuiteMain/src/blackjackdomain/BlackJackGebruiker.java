@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class BlackJackGebruiker implements BlackJackSpeler{  
   double credits = 0.0;     
-  boolean status = false;
+  boolean heeftBlackJack = false;
   ArrayList <KAART> hand = null;  
   String naam = null;
   double inzet = 0.0;
@@ -19,18 +19,47 @@ public class BlackJackGebruiker implements BlackJackSpeler{
     ArrayList <KAART> hand = new ArrayList <KAART> (); 
     this.hand=hand;
   }  
+  
+  public String getNaam(){
+    return naam;
+  }
+  
+  public void setNaam(String naam){
+	this.naam = naam;
+  }
       
   public double getCredits() {    
     return credits;
   }
   
-  public void setNaam(String naam){
-    this.naam = naam;
+  public void setCredits(double inzet) {   
+	credits = credits - inzet;    
   }
   
-  public String getNaam(){
-    return naam;
+  public double getInzet (){
+    return inzet;
   }
+	  
+  public void setInzet(double inzet){    
+    this.inzet = inzet;   
+    this.setCredits(inzet);    
+  }
+  
+  public boolean getHeeftBlackJack(){
+    return heeftBlackJack;
+  }
+  
+  public void setHeeftBlackJack(){
+    heeftBlackJack = true;
+  }  
+  
+  public int getScore(){
+    return score;
+  }
+  
+  public void setScore(int punten){
+	score = punten;
+  }  
   
   public void addKAART (KAART kaart){
     hand.add(kaart);
@@ -46,37 +75,6 @@ public class BlackJackGebruiker implements BlackJackSpeler{
   }
   
   public int handLengte(){
-    return hand.size();    
-  }
- 
-  public void setCredits(double inzet) {   
-    credits = credits - inzet;    
-  }
-  
-  public void setInzet(double inzet){
-    if (inzet<=this.getCredits()){
-    this.inzet = inzet;   
-    this.setCredits(inzet);}
-    else {}
-  }
-    
-  public double getInzet (){
-    return inzet;
-  }
-  
-  public void setStatusTrue(){
-    status = true;
+    return hand.size(); 
   }  
-  
-  public boolean getStatus(){
-    return status;
-  }
-  
-  public void setScore(int punten){
-    score = punten;
-  }
-  public int getScore(){
-    return score;
-  }
- 
 }

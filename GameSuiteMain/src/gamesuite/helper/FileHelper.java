@@ -1,4 +1,4 @@
-package helper;
+package gamesuite.helper;
 
 public class FileHelper {
 

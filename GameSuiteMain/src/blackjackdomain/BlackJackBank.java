@@ -3,11 +3,10 @@ package blackjackdomain;
 import java.util.ArrayList;
 
 public class BlackJackBank implements BlackJackSpeler {
+  ArrayList <KAART> hand = null;
   double credits = 0.0;      
-  boolean status = false;
-  ArrayList <KAART> hand = null;  
-  String naam = "Bank";
-  double inzet = 0.0;
+  boolean heeftBlackJack = false;    
+  String naam = "Bank";  
   int score = 0;
   
   public BlackJackBank (){   
@@ -20,24 +19,49 @@ public class BlackJackBank implements BlackJackSpeler {
       this.hand=hand;
     }  
   
-  public double getCredits() {    
-    return -1;
-  }
-  
   public String getNaam(){
     return naam;
   }
-  
+      
   public void setNaam(String naam){  
+  }
+  
+  public double getCredits() {    
+    return -1;
+  } 
+  
+  public void setCredits(double inzet) {     
+  }
+  
+  public double getInzet (){
+    return -1;
+  }
+  
+  public void setInzet(double inzet){
+  }
+  
+  public boolean getHeeftBlackJack(){ 
+    return heeftBlackJack;
+  }
+  
+  public void setHeeftBlackJack(){    
+  }  
+  
+  public int getScore(){
+    return score;
+  }
+
+  public void setScore(int punten){
+    score = punten;
   }
   
   public void addKAART (KAART kaart){
     hand.add(kaart);
   }
   
-  public KAART getKAART (int index){
-    hand.get(index);
-    return (hand.get(index));
+  public KAART getKAART (int index){ 
+	KAART kaart = hand.get(index);  
+    return kaart;
   }
   
   public void clearHand (){    
@@ -45,32 +69,6 @@ public class BlackJackBank implements BlackJackSpeler {
   }
   
   public int handLengte(){
-    return hand.size();    
-  }
- 
-  public void setCredits(double inzet) {     
-  }
-  
-  public void setInzet(double inzet){
-  }
-    
-  public double getInzet (){
-  return -1;
-  }
-  
-  public void setStatusTrue(){
-    status = true;
-  }  
-  
-  public boolean getStatus(){
-    return status;
-  }
-  
-  public void setScore(int punten){
-    score = punten;
-  }
-  public int getScore(){
-    return score;
-  }
- 
+    return hand.size();
+  } 
 }

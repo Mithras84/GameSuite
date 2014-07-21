@@ -1,23 +1,40 @@
 package memory;
 
+import java.util.ArrayList;
+
 public class Kaarten {
 	
 	
 	/**
-	 * De klasse om de kaarten en het type te beheren.
+	 * De klasse om de kaart-type te beheren.
 	 * 
 	 * Oke dan
 	 * @author Koen
 	 */
 
-	private int aantal = 0;
+	private int nummer = 0;
+	private String kaartsoort = "pony";
+	
 
-	public Kaarten(int aantal) {
-
+	public Kaarten (String kaartsoort, int nummer){
+		this.kaartsoort = kaartsoort;
+		this.nummer = nummer;
 	}
 
-	public boolean setKaartset() {
-		return false;
+	public void setKaartSet(String kaartsoort) {
+		this.kaartsoort = kaartsoort;
+	}
+	
+	public String getKaartSet(){
+		return kaartsoort;
+	}
+	public void setNummer(int nummer){
+		this.nummer = nummer;
+		
+	}
+	
+	public int getNummer(){
+		return nummer;
 	}
 
 }
