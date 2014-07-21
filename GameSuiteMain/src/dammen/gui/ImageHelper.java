@@ -30,13 +30,10 @@ public class ImageHelper {
 	
 	//Relative paths dont work :(
 	try {
-	    veldDonker = ImageIO.read(new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\resource\\img\\VeldDonker.jpg"));
-	    veldLicht = ImageIO.read
-		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\resource\\img\\VeldLicht2.jpg"));
-	    veldDonkerWit = ImageIO.read
-		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\resource\\img\\VeldDonkerMetSteenWit.jpg"));
-	    veldDonkerZwart = ImageIO.read
-		    (new File ("E:\\Java\\Workspace\\GameSuite\\GameSuiteMain\\resource\\img\\VeldDonkerMetSteenZwart.jpg"));
+	    veldDonker = ImageIO.read(new File ("GameSuiteMain/resource/img/VeldDonker.jpg"));
+	    veldLicht = ImageIO.read(new File ("GameSuiteMain/resource/img/VeldLicht2.jpg"));
+	    veldDonkerWit = ImageIO.read(new File ("GameSuiteMain/resource/img/VeldDonkerMetSteenWit.jpg"));
+	    veldDonkerZwart = ImageIO.read(new File ("GameSuiteMain/resource/img/VeldDonkerMetSteenZwart.jpg"));
 	} catch (IOException e) {
 	    System.out.println(e.toString());
 	    System.out.println("File not found :(");
