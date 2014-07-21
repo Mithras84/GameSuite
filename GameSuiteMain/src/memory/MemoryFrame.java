@@ -1,5 +1,7 @@
 package memory;
 
-public class MemoryFrame {
+import javax.swing.JFrame;
+
+public class MemoryFrame extends JFrame {
 
 }
