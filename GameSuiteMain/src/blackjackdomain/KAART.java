@@ -1,4 +1,4 @@
-package blackjack.domain;
+package blackjackdomain;
 
 public enum KAART {   
   HTWO (2),
