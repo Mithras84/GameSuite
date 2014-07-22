@@ -49,7 +49,7 @@ public class Coord {
     public static int getKolommen() {
         return kolommen;
     }
-
+        
     /**
      * @return the rijen
      */

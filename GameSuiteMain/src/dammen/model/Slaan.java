@@ -11,23 +11,37 @@ package dammen.model;
  */
 public class Slaan extends Moves {
     
-    private DamSteen steen;
+    private DamSteen currentSteen;
+    private Nodes targetNodeSteen;
 
     /**
      * @param current
      * @param target
      */
-    public Slaan(Nodes current, Nodes target, DamSteen steen) {
-	super(current, target);
+    public Slaan(Nodes currentNode, Nodes targetNode, Nodes targetNodeSteen) {
+	super(currentNode, targetNode);
 	// TODO Auto-generated constructor stub
-	this.steen = steen;
+	this.targetNodeSteen = targetNodeSteen;
+    }
+    
+    public void makeMove () {
+	super.makeMove();
+	this.targetNodeSteen.removeDamSteen();
+	
+    }
+
+    /**
+     * @return the targetSteen
+     */
+    public Nodes getTargetNodeSteen() {
+        return targetNodeSteen;
     }
 
     /**
      * @return the steen
      */
-    public DamSteen getSteen() {
-        return steen;
+    public DamSteen getCurrentSteen() {
+        return currentSteen;
     }
     
     

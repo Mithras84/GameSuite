@@ -23,7 +23,7 @@ public class Nodes {
     private DamSteen damsteen;
     
     private boolean highLight;
-    private boolean selected;
+    //private boolean selected;
     private boolean AIHighlight;
 
 
@@ -79,7 +79,11 @@ public class Nodes {
 	if (!this.hasDamsteen()) {
 	    this.damsteen = steen;
 	    this.damsteen.setCoord(this.coord);
-	}
+	} 
+    }
+    
+    public void removeDamSteen () {
+	this.damsteen = null;
     }
 
     /**
@@ -248,17 +252,19 @@ public class Nodes {
     /**
      * @return the selected
      */
+    /*
     public boolean isSelected() {
 	return selected;
     }
-
+    */
     /**
      * @param selected the selected to set
      */
+    /*
     public void setSelected(boolean selected) {
 	this.selected = selected;
     }
-
+    */
 
 
 }

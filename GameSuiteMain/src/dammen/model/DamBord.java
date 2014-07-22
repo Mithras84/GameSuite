@@ -64,6 +64,7 @@ public class DamBord {
 		if (speelbord[i][j].hasDamsteen()) {
 		    speelbord[i][j].getDamsteen().setMovesToNull();
 		    setPossibleMoves(speelbord[i][j]);
+		    setPossibleSlagen(speelbord[i][j], speelbord[i][j].getDamsteen());
 		}
 	    }
 	}
@@ -124,10 +125,9 @@ public class DamBord {
 	    for (int j = 0; j < kolommen; j++) {
 		if (this.speelbord[j][i].getKleur() == "zwart")
 		    this.speelbord[j][i].setDamSteen(new DamSteen(kleur, speler));
+		
 	    }
 	}
-	
-	getNodeAt(3,3).getDamsteen().setDam(true);
     }
     
     public void makeMove (Moves move) {
@@ -215,10 +215,13 @@ public class DamBord {
      * @param Nodes node
      */
     public void setPossibleMoves (Nodes node) {
+	//Voor player moves: alleen nodes met een damsteen van de speler selecteren.
 	if (node.getDamsteen().isOwnedByPlayer()) {
+	    //Eerst kijken of de node een aangrenzende linkerrechter node heeft die leeg is:
 	    if ( getNodeNE(node) != null && !getNodeNE(node).hasDamsteen() ) {
 		node.getDamsteen().addMove( new Moves(node, getNodeNE(node)) );
 	    } 
+	    //Dan kijken of de node een aangrenzende rechternode heeft die leeg is:
 	    if (getNodeNW(node) != null && !getNodeNW(node).hasDamsteen() ) {
 		node.getDamsteen().addMove(new Moves (node, getNodeNW(node)));
 	    }
@@ -232,9 +235,94 @@ public class DamBord {
 	}
     }  
     
-    public void setPossibleSlagen(Nodes node) {
+    public void setPossibleSlagen(Nodes node, DamSteen steen) {	
+	kanSlaanNE(node, steen);
+	kanSlaanNW(node, steen);
+	kanSlaanSE(node, steen);
+	kanSlaanSW(node, steen);	
+    }
+    
+    private boolean checkDubbeleDamsteen (DamSteen steen, Nodes nodeToCompare) {
+	DamSteen compareSteen = nodeToCompare.getDamsteen();
+	Moves[] moveList = steen.getMoveToArray();
+	for (Moves move: moveList) {
+	    if (move instanceof Slaan) {
+		Slaan slaan = (Slaan) move;
+		DamSteen prevSteen = slaan.getTargetNodeSteen().getDamsteen();
+		if (prevSteen.getCoord().equalsCoor(compareSteen.getCoord()))
+		    return true;
+	    }
+		
+	}
+	
+	return false;
 	
     }
+
+    /**
+     * @param node
+     * @param steen
+     */
+    private void kanSlaanNE(Nodes node, DamSteen steen) {
+	if ( getNodeNE(node) != null && getNodeNE(node).hasDamsteen() ) {
+	    if (steen.getKleur() != getNodeNE(node).getDamsteen().getKleur()  && !checkDubbeleDamsteen(steen, getNodeNE(node) ) ) {
+		if ( getNodeNE(getNodeNE(node)) != null && !getNodeNE(getNodeNE(node)).hasDamsteen() ) {
+		    steen.addMove(new Slaan(node,getNodeNE(getNodeNE(node)),getNodeNE(node)));
+		    System.out.println ( "Steen kan slaan!" );
+		    setPossibleSlagen(getNodeNE(getNodeNE(node)), steen);
+		}
+	    }
+	}
+    }
+    
+    /**
+     * @param node
+     * @param steen
+     */
+    private void kanSlaanNW(Nodes node, DamSteen steen) {
+	if ( getNodeNW(node) != null && getNodeNW(node).hasDamsteen() ) {
+	    if (steen.getKleur() != getNodeNW(node).getDamsteen().getKleur() && !checkDubbeleDamsteen(steen, getNodeNW(node) ) ) {
+		if ( getNodeNW(getNodeNW(node)) != null && !getNodeNW(getNodeNW(node)).hasDamsteen() ) {
+		    steen.addMove(new Slaan(node,getNodeNW(getNodeNW(node)),getNodeNW(node)));
+		    System.out.println ( "Steen kan slaan!" );
+		    //setPossibleSlagen(getNodeNW(getNodeNW(node)), steen);
+		}
+	    }
+	}
+    }
+    
+    /**
+     * @param node
+     * @param steen
+     */
+    private void kanSlaanSE(Nodes node, DamSteen steen) {
+	if ( getNodeSE(node) != null && getNodeSE(node).hasDamsteen() ) {
+	    if (steen.getKleur() != getNodeSE(node).getDamsteen().getKleur() && !checkDubbeleDamsteen(steen, getNodeSE(node)) ) {
+		if ( getNodeSE(getNodeSE(node)) != null && !getNodeSE(getNodeSE(node)).hasDamsteen() ) {
+		    steen.addMove(new Slaan(node,getNodeSE(getNodeSE(node)),getNodeSE(node)));
+		    System.out.println ( "Steen kan slaan!" );
+		    //setPossibleSlagen(getNodeSE(getNodeSE(node)), steen);
+		}
+	    }
+	}
+    }
+    
+    /**
+     * @param node
+     * @param steen
+     */
+    private void kanSlaanSW(Nodes node, DamSteen steen) {
+	if ( getNodeSW(node) != null && getNodeSW(node).hasDamsteen() ) {
+	    if (steen.getKleur() != getNodeSW(node).getDamsteen().getKleur() && !checkDubbeleDamsteen(steen, getNodeSW(node)) ) {
+		if ( getNodeSW(getNodeSW(node)) != null && !getNodeSW(getNodeNW(node)).hasDamsteen() ) {
+		    steen.addMove(new Slaan(node,getNodeSW(getNodeSW(node)),getNodeSW(node)));
+		    System.out.println ( "Steen kan slaan!" );
+		    //setPossibleSlagen(getNodeSW(getNodeSW(node)), steen);
+		}
+	    }
+	}
+    }
+    
     
     private Nodes getNodeNE (Nodes node) {
 	if (node.getCoordNE() != null ) 
