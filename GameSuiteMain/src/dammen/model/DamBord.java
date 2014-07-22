@@ -206,6 +206,7 @@ public class DamBord {
      * welke vakjes er vrij zijn voor een eventuele zet.
      * 
      * Deze mogelijke zet wordt opgeslagen in het damsteen object in de node.
+     * Afhankelijk van de eigenaar van de damsteen: Ga vooruit of achteruit.
      * 
      * @todo Moet netter en dynamischer. AI moet ook gebruik kunnen maken van
      *       deze functie! Update.. Is in ieder geval netter, en maakt gebruik van
@@ -214,80 +215,51 @@ public class DamBord {
      * @param Nodes node
      */
     public void setPossibleMoves (Nodes node) {
-	checkForMoveL(node, getLeftNode(node));
-	checkForMoveR(node, getRightNode(node));
-    }
-    /*
-    public void setPossibleMoves (Nodes node) {
-	Coord coord = node.getCoord();
-	
-	if (node.getCoordLeft() != null ) {
-	    if (getNodeAt( node.getCoordLeft() ).hasDamsteen() ) {
-		if (getNodeAt( node.getCoordLeft() ).getDamsteen().isOwnedByPlayer()) {
-		    DamSteen steen = getNodeAt( node.getCoordLeft() ).getDamsteen();
-		}
-	    } else 
-		node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordLeft()) );
-	} 
-	
-	if (node.getCoordRight() != null && !getNodeAt( node.getCoordRight() ).hasDamsteen() ) {
-	    node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordRight()) );
-	}
-    }
-    */
-
-    /**
-     * @param nodeC -> Current (selected) node
-     * @param nodeL -> Target node
-     */
-    private void checkForMoveL(Nodes nodeC, Nodes nodeL) {
-	if (nodeL != null) {
-	    if (!nodeL.hasDamsteen() ) {
-		//Vrij vakje gevonden. Toevoegen als mogelijke 'move'.
-		nodeC.getDamsteen().addMove( new Moves(nodeC, nodeL) );
-		if (nodeC.getDamsteen().isDam()) {
-		    checkForMoveL( nodeC,  getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() +1) );
-		    //Argh!! Ik wil niet het hele bord selecteren.. 
-		    //this.checkForMoveL( nodeC,  getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() -1) );
-		}
-	    } else if (nodeL.getDamsteen().isOwnedByPlayer() != nodeC.getDamsteen().isOwnedByPlayer()) {
-		if ( getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() +1) != null && !getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() +1).hasDamsteen() )
-		    System.out.println ("Iemand kan slaan!");
+	if (node.getDamsteen().isOwnedByPlayer()) {
+	    if ( getNodeNE(node) != null && !getNodeNE(node).hasDamsteen() ) {
+		node.getDamsteen().addMove( new Moves(node, getNodeNE(node)) );
+	    } 
+	    if (getNodeNW(node) != null && !getNodeNW(node).hasDamsteen() ) {
+		node.getDamsteen().addMove(new Moves (node, getNodeNW(node)));
+	    }
+	} else {
+	    if ( getNodeSE(node) != null && !getNodeSE(node).hasDamsteen() ) {
+		node.getDamsteen().addMove( new Moves(node, getNodeSE(node)) );
+	    } 
+	    if (getNodeSW(node) != null && !getNodeSW(node).hasDamsteen() ) {
+		node.getDamsteen().addMove(new Moves (node, getNodeSW(node)));
 	    }
 	}
+    }  
+    
+    public void setPossibleSlagen(Nodes node) {
+	
     }
     
-    
-    /**
-     * @param nodeC -> Current (selected) node
-     * @param nodeL -> Target node
-     */
-    private void checkForMoveR(Nodes nodeC, Nodes nodeR) {
-	if (nodeR != null) {
-	    if (!nodeR.hasDamsteen() ) {
-		//Vrij vakje gevonden. Toevoegen als mogelijke 'move'.
-		nodeC.getDamsteen().addMove( new Moves(nodeC, nodeR) );
-		if (nodeC.getDamsteen().isDam()) {
-		    checkForMoveR(nodeC, getNodeAt(nodeR.getXCoord() +1, nodeR.getYCoord() +1) );
-		    //Argh!! Zelfde probleem.. Misschien niet recursive aanpakken?
-		}
-	    } else if (nodeR.getDamsteen().isOwnedByPlayer() != nodeC.getDamsteen().isOwnedByPlayer()) {
-		if ( getNodeAt(nodeR.getXCoord() +1, nodeR.getYCoord() +1) != null && !getNodeAt(nodeR.getXCoord() +1, nodeR.getYCoord() +1).hasDamsteen() )
-		    System.out.println ("Iemand kan slaan!");
-	    }
-	}
-    }
-    
-    private Nodes getLeftNode (Nodes node) {
-	if (node.getCoordLeft() != null ) 
-	    return getNodeAt(node.getCoordLeft());
+    private Nodes getNodeNE (Nodes node) {
+	if (node.getCoordNE() != null ) 
+	    return getNodeAt(node.getCoordNE());
 	else
 	    return null;
     }
     
-    private Nodes getRightNode (Nodes node) {
-	if (node.getCoordRight() != null )
-	    return getNodeAt(node.getCoordRight());
+    private Nodes getNodeNW (Nodes node) {
+	if (node.getCoordNW() != null )
+	    return getNodeAt(node.getCoordNW());
+	else
+	    return null;
+    }
+    
+    private Nodes getNodeSE (Nodes node) {
+	if (node.getCoordSE() != null )
+	    return getNodeAt(node.getCoordSE());
+	else
+	    return null;
+    }
+    
+    private Nodes getNodeSW (Nodes node) {
+	if (node.getCoordSW() != null )
+	    return getNodeAt(node.getCoordSW());
 	else
 	    return null;
     }
@@ -325,4 +297,58 @@ public class DamBord {
 	    }
 	}
     }
+    
+    /*
+    private void checkForMoveL(Nodes nodeC, Nodes nodeL) {
+	if (nodeL != null) {
+	    if (!nodeL.hasDamsteen() ) {
+		//Vrij vakje gevonden. Toevoegen als mogelijke 'move'.
+		nodeC.getDamsteen().addMove( new Moves(nodeC, nodeL) );
+		if (nodeC.getDamsteen().isDam()) {
+		    checkForMoveL( nodeC,  getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() +1) );
+		    //Argh!! Ik wil niet het hele bord selecteren.. 
+		    //this.checkForMoveL( nodeC,  getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() -1) );
+		}
+	    } else if (nodeL.getDamsteen().isOwnedByPlayer() != nodeC.getDamsteen().isOwnedByPlayer()) {
+		if ( getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() +1) != null && !getNodeAt(nodeL.getXCoord() -1, nodeL.getYCoord() +1).hasDamsteen() )
+		    System.out.println ("Iemand kan slaan!");
+	    }
+	}
+    } 
+    
+    
+    private void checkForMoveR(Nodes nodeC, Nodes nodeR) {
+	if (nodeR != null) {
+	    if (!nodeR.hasDamsteen() ) {
+		//Vrij vakje gevonden. Toevoegen als mogelijke 'move'.
+		nodeC.getDamsteen().addMove( new Moves(nodeC, nodeR) );
+		if (nodeC.getDamsteen().isDam()) {
+		    checkForMoveR(nodeC, getNodeAt(nodeR.getXCoord() +1, nodeR.getYCoord() +1) );
+		    //Argh!! Zelfde probleem.. Misschien niet recursive aanpakken?
+		}
+	    } else if (nodeR.getDamsteen().isOwnedByPlayer() != nodeC.getDamsteen().isOwnedByPlayer()) {
+		if ( getNodeAt(nodeR.getXCoord() +1, nodeR.getYCoord() +1) != null && !getNodeAt(nodeR.getXCoord() +1, nodeR.getYCoord() +1).hasDamsteen() )
+		    System.out.println ("Iemand kan slaan!");
+	    }
+	}
+    }
+    */   
+    /*
+    public void setPossibleMoves (Nodes node) {
+	Coord coord = node.getCoord();
+	
+	if (node.getCoordLeft() != null ) {
+	    if (getNodeAt( node.getCoordLeft() ).hasDamsteen() ) {
+		if (getNodeAt( node.getCoordLeft() ).getDamsteen().isOwnedByPlayer()) {
+		    DamSteen steen = getNodeAt( node.getCoordLeft() ).getDamsteen();
+		}
+	    } else 
+		node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordLeft()) );
+	} 
+	
+	if (node.getCoordRight() != null && !getNodeAt( node.getCoordRight() ).hasDamsteen() ) {
+	    node.getDamsteen().addMove(node, getNodeAt(getNodeAt(coord).getCoordRight()) );
+	}
+    }
+    */
 }

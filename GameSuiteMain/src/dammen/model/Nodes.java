@@ -170,6 +170,38 @@ public class Nodes {
 	    return null;
 	}
     }
+    
+    public Coord getCoordNE () {
+	try {
+	    return new Coord(this.coord.getX() + 1, this.coord.getY() + 1);
+	} catch (Exception e) {
+	    return null;
+	}
+    }
+    
+    public Coord getCoordNW () {
+	try {
+	    return new Coord(this.coord.getX() - 1, this.coord.getY() + 1);
+	} catch (Exception e) {
+	    return null;
+	}
+    }
+    
+    public Coord getCoordSE () {
+	try {
+	    return new Coord(this.coord.getX() + 1, this.coord.getY() - 1);
+	} catch (Exception e) {
+	    return null;
+	}
+    }
+    
+    public Coord getCoordSW () {
+	try {
+	    return new Coord(this.coord.getX() - 1, this.coord.getY() - 1);
+	} catch (Exception e) {
+	    return null;
+	}
+    }
 
     /**
      * Geef Coordinaten van deze node.
